@@ -17,6 +17,16 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            $table->string('avatar_url')->nullable();
+            $table->tinyInteger('is_active')->default(1);
+            $table->dateTime('last_login_at')->nullable();
+
+            $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
+
+            // $table->foreignId('department_id')->constrained(); //xoa bang cha khong mat bang con
+
+            //$table->foreignId('department_id')->constrained()->onUpdate('cascade')->onDelete('cascade'); //xoa bang cha se mat con
             $table->rememberToken();
             $table->timestamps();
         });
