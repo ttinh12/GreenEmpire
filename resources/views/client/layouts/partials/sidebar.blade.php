@@ -57,7 +57,7 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Kinh doanh</span></li>
+        <!-- <li class="menu-header small text-uppercase"><span class="menu-header-text">Kinh doanh</span></li>
 
         <li class="menu-item {{ request()->is('customers*') || request()->is('contacts*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -94,18 +94,18 @@
                 <i class="menu-icon tf-icons bx bx-note"></i>
                 <div>Nhật ký chăm sóc</div>
             </a>
-        </li>
+        </li> -->
 
         <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Dịch vụ & Hợp đồng</span>
+            <span class="menu-header-text">Dịch vụ</span>
         </li>
 
-        <li class="menu-item">
+        <!-- <li class="menu-item">
             <a href="#" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-file"></i>
                 <div>Danh sách Hợp đồng</div>
             </a>
-        </li>
+        </li> -->
 
         <li
             class="menu-item {{ request()->routeIs('ticket.*') && !request()->routeIs('ticket.home') ? 'active open' : '' }}">
@@ -127,7 +127,7 @@
             </ul>
         </li>
 
-        <li class="menu-header small text-uppercase">
+        <!-- <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Tài chính & Kế toán</span>
         </li>
 
@@ -182,5 +182,5 @@
                 <div>Hướng dẫn sử dụng</div>
             </a>
         </li>
-    </ul>
+    </ul> -->
 </aside>
