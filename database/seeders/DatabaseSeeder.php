@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
        
     $this->call([
         DepartmentSeeder::class,
-        UserSeeder::class
+        UserSeeder::class,
+        TicketSeeder::class,
     ]);
 
     // user random

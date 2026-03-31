@@ -1,60 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Trang chu')</title>
+    @include('client.layouts.partials.head')
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    @yield('title')
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="light-style layout-menu-fixed" dir="ltr">
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
 
-    <!-- HEADER -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{}"></a>
+            @include('client.layouts.partials.sidebar')
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="layout-page">
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                      <img src="{{ asset('logo/y-nghia-logo-apple-2.jpg') }}" height="100" alt="">
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('ticket.index') }}">Ticket</a>
-                    </li>
-                </ul>
+                @include('client.layouts.partials.navbar')
+
+                <div class="content-wrapper">
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        @yield('content')
+                    </div>
+
+                    @include('client.layouts.partials.footer')
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
 
-    <!-- CONTENT -->
-    <main class="flex-fill container my-4">
-        @yield('content')
-    </main>
+    @include('client.layouts.partials.scripts')
 
-
-
-
-    <!-- FOOTER -->
-    <footer class="bg-dark text-white text-center py-3 mt-auto">
-        <div class="container">
-            <p class="mb-0">© 2026 MyApp. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    @stack('scripts')
 </body>
 
 </html>
