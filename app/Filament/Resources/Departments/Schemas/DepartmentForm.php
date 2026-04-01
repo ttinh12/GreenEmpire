@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Departments\Schemas;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Toggle;
 
 class DepartmentForm
 {
@@ -18,10 +19,9 @@ class DepartmentForm
                     ->required(),
                 Textarea::make('description')
                     ->columnSpanFull(),
-                TextInput::make('is_active')
+                Toggle::make('is_active')
                     ->required()
-                    ->numeric()
-                    ->default(1),
+                    ->default(true),
             ]);
     }
 }

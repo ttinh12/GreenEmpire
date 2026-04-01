@@ -7,6 +7,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Filters\SelectFilter;
 
 class UsersTable
 {
@@ -14,44 +17,44 @@ class UsersTable
     {
         return $table
             ->columns([
+
+                ImageColumn::make('avatar_url')
+                    ->label('Avatar')
+                    ->disk('public') // 🔥 BẮT BUỘC
+                    ->circular(),
+
                 TextColumn::make('name')
                     ->searchable(),
+
                 TextColumn::make('email')
-                    ->label('Email address')
                     ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('avatar_url')
+
+                IconColumn::make('is_active') // 🔥 FIX
+                    ->boolean(),
+
+                TextColumn::make('department.name')
+                    ->label('Department')
+                    ->badge()
+                    ->sortable()
                     ->searchable(),
-                TextColumn::make('is_active')
-                    ->numeric()
-                    ->sortable(),
+
                 TextColumn::make('last_login_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('department_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->dateTime(),
+
             ])
+
             ->filters([
-                //
+
+
+                SelectFilter::make('department_id')
+                    ->relationship('department', 'name'),
+
             ])
+
             ->recordActions([
                 EditAction::make(),
             ])
-            ->paginated(1,2,3,4,5,6,7,8,9,10)
-            // ->modifyQueryUsing(function ($query) {
-              
-            // })
+
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
