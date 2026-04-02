@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Filament\Resources\Tickets\Tables;
+
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use App\Enums\TicketPriority;
+
+class TicketsTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('title')
+                    ->searchable(),
+                TextColumn::make('user_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('assign_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('priority')
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state ? TicketPriority::from($state): '')
+                    ->color(fn(string $state): string => TicketPriority::from($state)->getColor())
+                    ->sortable(),
+                TextColumn::make('status')
+                    ->badge()
+                    
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                EditAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+}

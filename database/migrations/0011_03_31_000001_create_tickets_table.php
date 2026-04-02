@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('assign_id')->nullable()->constrained('users')->onDelete('set null');
 
-            $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
-            $table->enum('status', ['open', 'processing', 'done'])->default('open');
+            $table->tinyInteger('priority')->default(1);
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         }); 
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Models\Ticket;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ class TicketController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
         $tickets = Ticket::with(['creator', 'assignee'])
@@ -26,10 +28,7 @@ class TicketController extends Controller
      */
     public function create()
     {
-        // Lấy tất cả user để đổ vào select box "Người xử lý"
-        $users = \App\Models\User::all();
-
-        // Trả về view và kèm theo biến $users
+        $users = User::all();
         return view('client.tickets.create', compact('users'));
     }
     /**

@@ -3,7 +3,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">STT</th>
+                <th scope="col">#</th>
                 <th scope="col">Nội dung</th>
                 <th scope="col">Người tạo</th>
                 <th scope="col">Người được giao</th>
