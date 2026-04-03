@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         UserSeeder::class,
         CustomerSeeder::class,
         ContactSeeder::class,
+        CustomerNoteSeeder::class,
         TicketSeeder::class,
     ]);
 

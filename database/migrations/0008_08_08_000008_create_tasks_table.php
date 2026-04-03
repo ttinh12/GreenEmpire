@@ -20,9 +20,13 @@ return new class extends Migration
             $table->string('title', 300);
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();
-            $table->enum('priority', ['high', 'medium', 'low'])->default('medium');
-            $table->enum('status', ['todo', 'in_progress', 'done', 'cancelled'])->default('todo');
+            //$table->enum('priority', ['high', 'medium', 'low'])->default('medium');
+           // $table->enum('status', ['todo', 'in_progress', 'done', 'cancelled'])->default('todo');
+            $table->integer('priority')->default(2); // 1: high, 2: medium, 3: low
+            $table->integer('status')->default(1); // 1: todo, 2: in_progress, 3: done, 4: cancelled
             $table->datetime('completed_at')->nullable();
+          
+            
             $table->timestamps();
 
             $table->index('assignee_id');

@@ -18,21 +18,21 @@ class CustomerFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'code' => $this->faker->unique()->bothify('CUST-####'),
+          return [
+            'code' => 'KH' . $this->faker->unique()->numberBetween(1, 9999),
             'name' => $this->faker->company(),
-            'type' => $this->faker->randomElement(['Individual', 'Company']),
+            'type' => $this->faker->numberBetween(1, 4),
             'address' => $this->faker->address(),
-            'province' => $this->faker->city(), // ✅ Đã sửa - dùng city() thay vì state()
-            'tax_code' => $this->faker->optional()->bothify('TAX-#####'),
+            'province' => $this->faker->city(),
+            'tax_code' => $this->faker->optional()->numerify('##########'),
             'website' => $this->faker->optional()->url(),
-            'email' => $this->faker->optional()->safeEmail(),
-            'phone' => $this->faker->optional()->phoneNumber(),
+            'email' => $this->faker->optional()->email(),
+            'phone' => $this->faker->phoneNumber(),
             'fax' => $this->faker->optional()->phoneNumber(),
-            'department_id' => Department::inRandomOrder()->value('id'),
-            'account_manager_id' => User::inRandomOrder()->value('id'),
-            'source' => $this->faker->randomElement(['Referral', 'Website', 'Cold Call', 'Other']),
-            'status' => $this->faker->randomElement(['Active', 'Inactive']),
+            'department_id' => null,
+            'account_manager_id' => null,
+            'source' => $this->faker->randomElement(['Google', 'Facebook', 'Referral', 'Email']),
+            'status' => $this->faker->numberBetween(1, 3),
             'notes' => $this->faker->optional()->paragraph(),
         ];
     }

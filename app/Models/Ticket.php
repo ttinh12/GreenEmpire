@@ -27,21 +27,7 @@ class Ticket extends Model
         'updated_at' => 'datetime',
     ];
 
-    // /**
-    //  * Liên kết tới người tạo phiếu (Khóa ngoại user_id)
-    //  */
-    // public function creator(): BelongsTo
-    // {
-    //     return $this->belongsTo(User::class, 'user_id');
-    // }
 
-    // /**
-    //  * Liên kết tới người được giao xử lý (Khóa ngoại assign_id)
-    //  */
-    // public function assignee(): BelongsTo
-    // {
-    //     return $this->belongsTo(User::class, 'assign_id');
-    // }
 
     public function user(): BelongsTo
     {

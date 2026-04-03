@@ -37,6 +37,8 @@ class Customer extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+         'type' => 'integer',
+        'status' => 'integer',
     ];
 
     public function department()

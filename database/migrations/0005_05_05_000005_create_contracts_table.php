@@ -35,8 +35,9 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->date('signed_date')->nullable();
 
-            $table->enum('status', ['draft', 'active', 'completed', 'overdue', 'cancelled'])
-                ->default('draft');
+            // $table->enum('status', ['draft', 'active', 'completed', 'overdue', 'cancelled'])
+            //     ->default('draft');
+            $table->integer('status')->default(1); // 1: draft, 2: active, 3: completed, 4: overdue, 5: cancelled   
 
             $table->text('payment_terms')->nullable();
 

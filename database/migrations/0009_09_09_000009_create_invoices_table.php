@@ -25,8 +25,10 @@ return new class extends Migration
             $table->decimal('total_amount', 18, 2)->default(0);
             $table->decimal('paid_amount', 18, 2)->default(0);
             $table->decimal('remaining', 18, 2)->storedAs('total_amount - paid_amount');
-            $table->enum('status', ['draft', 'sent', 'paid', 'partial', 'overdue', 'cancelled'])->default('draft');
-            $table->enum('payment_method', ['bank_transfer', 'cash', 'check', 'other'])->nullable();
+            // $table->enum('status', ['draft', 'sent', 'paid', 'partial', 'overdue', 'cancelled'])->default('draft');
+            // $table->enum('payment_method', ['bank_transfer', 'cash', 'check', 'other'])->nullable();
+            $table->integer('status')->default(1); // 1: draft, 2: sent, 3: paid, 4: partial, 5: overdue, 6: cancelled
+            $table->integer('payment_method')->nullable(); // 1: bank_transfer, 2: cash, 3: check, 4: other
             $table->text('bank_info')->nullable();
             $table->text('notes')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
