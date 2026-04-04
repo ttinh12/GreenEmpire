@@ -24,12 +24,12 @@ class TicketForm
                 TextInput::make('assign_id')
                     ->numeric(),
                 Select::make('priority')
-                    ->options(['low' => 'Low', 'medium' => 'Medium', 'high' => 'High'])
-                    ->default('medium')
+                    ->options(['1' => 'Low', '2' => 'Medium', '3' => 'High'])
+                    ->default('1')
                     ->required(),
                 Select::make('status')
-                    ->options(['open' => 'Open', 'processing' => 'Processing', 'done' => 'Done'])
-                    ->default('open')
+                    ->options(['1' => 'Active', '2' => 'Inactive', '3' => 'Banned'])
+                    ->default('1')
                     ->required(),
             ]);
     }

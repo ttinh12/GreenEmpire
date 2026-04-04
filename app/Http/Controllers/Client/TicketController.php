@@ -31,7 +31,7 @@ class TicketController extends Controller
         $users = User::all();
         return view('client.tickets.create', compact('users'));
     }
-    /**
+    /** 
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

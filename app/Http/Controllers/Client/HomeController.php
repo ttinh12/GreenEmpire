@@ -16,6 +16,10 @@ class HomeController extends Controller
     {
         return view('client.layouts.master');
     }
+    public function service()
+    {
+        return view('client.services.index');
+    }
     public function dashboard()
     {
         return view('client.dashboard');

@@ -24,9 +24,9 @@
                         <div class="col-md-6 mb-3">
                             <label for="priority" class="form-label">Mức độ ưu tiên</label>
                             <select name="priority" id="priority" class="form-select">
-                                <option value="low">Thấp</option>
-                                <option value="medium" selected>Trung bình</option>
-                                <option value="high">Cao</option>
+                                <option value="1" selected>Thấp</option>
+                                <option value="2" selected>Trung bình</option>
+                                <option value="3">Cao</option>
                             </select>
                         </div>
 
@@ -40,15 +40,21 @@
                             </select>
                         </div>
                     </div>
-
-                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                    <input type="hidden" name="status" value="open">
-
-                    <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
-                    <a href="{{ route('ticket.home') }}" class="btn btn-outline-secondary">Hủy</a>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="status" class="form-label">Trạng thái</label>
+                            <select name="status" id="status" class="form-select">
+                                <option value="1" selected>Hoạt động</option>
+                                <option value="2" selected>Không hoạt động</option>
+                                <option value="3">Bị cấm</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                            <a href="{{ route('ticket.home') }}" class="btn btn-outline-secondary">Hủy</a>
                 </form>
             </div>
         </div>
     </div>
-
 @endsection

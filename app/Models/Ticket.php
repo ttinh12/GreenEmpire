@@ -38,4 +38,8 @@ class Ticket extends Model
     protected $casts = [
         'status' => TicketStatus::class,
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

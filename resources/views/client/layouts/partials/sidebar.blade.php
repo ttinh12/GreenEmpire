@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="{{ route('ticket.home') }}" class="app-brand-link">
+        <a href="{{ route('dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg">
                     <g id="g-app-brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -32,8 +32,8 @@
             <span class="menu-header-text">Hệ thống & Cá nhân</span>
         </li>
 
-        <li class="menu-item {{ request()->routeIs('ticket.home') ? 'active' : '' }}">
-            <a href="{{ route('ticket.home') }}" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Bảng điều khiển</div>
             </a>
@@ -52,7 +52,7 @@
                 </li>
                 <li class="menu-item">
                     <a href="#" class="menu-link">
-                        <div>Công việc được giao</div>
+                        <div>Dịch vụ của tôi</div>
                     </a>
                 </li>
             </ul>
@@ -108,14 +108,14 @@
         </li> -->
 
         <li
-            class="menu-item {{ request()->routeIs('ticket.*') && !request()->routeIs('ticket.home') ? 'active open' : '' }}">
+            class="menu-item {{ request()->routeIs('ticket.*') && !request()->routeIs('dashboard') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-support"></i>
                 <div>Hỗ trợ (Tickets)</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('ticket.home') ? 'active' : '' }}">
-                    <a href="{{ route('ticket.home') }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard') }}" class="menu-link">
                         <div>Tất cả phiếu</div>
                     </a>
                 </li>

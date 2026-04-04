@@ -53,4 +53,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
+    public function createdTickets()
+    {
+        return $this->hasMany(Ticket::class, 'user_id');
+    }
 }

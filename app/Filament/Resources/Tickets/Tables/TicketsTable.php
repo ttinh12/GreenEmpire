@@ -17,10 +17,12 @@ class TicketsTable
             ->columns([
                 TextColumn::make('title')
                     ->searchable(),
-                TextColumn::make('user_id')
+                TextColumn::make('user.name')
+                    ->label('Người tạo')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('assign_id')
+                TextColumn::make('assignee.name')
+                    ->label('Người được giao')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('priority')
@@ -30,7 +32,6 @@ class TicketsTable
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge()
-                    
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
