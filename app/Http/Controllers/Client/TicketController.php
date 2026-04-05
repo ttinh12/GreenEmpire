@@ -43,7 +43,7 @@ class TicketController extends Controller
             'user_id' => $request->user_id,
             'status' => $request->status,
         ]);
-        return redirect()->route('ticket.home');
+        return redirect()->route('dashboard')->with('success', 'Yêu cầu của bạn đã được gửi thành công!');
 
     }
 

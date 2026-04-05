@@ -6,16 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Contract extends Model
+class Invoice extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'code', 'customer_id', 'department_id', 'title', 'description',
-        'value', 'vat_rate', 'vat_amount', 'total_value',
-        'start_date', 'end_date', 'signed_date', 'status',
-        'payment_terms', 'warranty_months', 'file_url', 'created_by', 'updated_by'
+        'code', 'contract_id', 'customer_id', 'department_id',
+        'issue_date', 'due_date', 'subtotal', 'vat_rate',
+        'vat_amount', 'total_amount', 'paid_amount',
+        'status', 'payment_method', 'bank_info', 'notes', 'created_by'
     ];
+
+    // Các quan hệ để Trung Tính đổ dữ liệu trang Client
+    public function contract(): BelongsTo {
+        return $this->belongsTo(Contract::class);
+    }
 
     public function customer(): BelongsTo {
         return $this->belongsTo(Customer::class);

@@ -19,7 +19,18 @@ class DatabaseSeeder extends Seeder
     $this->call([
         DepartmentSeeder::class,
         UserSeeder::class,
+        ServiceSeeder::class,
+        TransactionCategorySeeder::class,
         TicketSeeder::class,
+        CustomerSeeder::class,
+        ContractSeeder::class,
+        ContractItemSeeder::class,
+        InvoiceSeeder::class,
+        InvoiceItemSeeder::class,
+        PaymentSeeder::class,
+        TransactionSeeder::class,
+        TaskSeeder::class,
+        CustomerNoteSeeder::class,
     ]);
 
     // user random

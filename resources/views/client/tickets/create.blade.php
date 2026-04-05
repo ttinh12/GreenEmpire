@@ -52,7 +52,7 @@
                         <div class="col-md-6 mb-3">
                             <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                             <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
-                            <a href="{{ route('ticket.home') }}" class="btn btn-outline-secondary">Hủy</a>
+                            <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Hủy</a>
                 </form>
             </div>
         </div>
