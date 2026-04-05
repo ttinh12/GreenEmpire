@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-
+            $table->string('role')->default('customer'); // admin hoặc customer
             $table->string('avatar_url')->nullable();
             $table->tinyInteger('is_active')->default(1);
             $table->dateTime('last_login_at')->nullable();

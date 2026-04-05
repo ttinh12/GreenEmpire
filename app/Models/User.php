@@ -7,8 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Department;
-
-class User extends Authenticatable
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -20,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', // admin hoặc customer
         'avatar_url',
         'is_active',
         'last_login_at',
@@ -53,8 +55,13 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
-    public function createdTickets()
+    public function createdTickets()    
     {
         return $this->hasMany(Ticket::class, 'user_id');
+    }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Chỉ cho phép những người có role là 'admin' vào trang quản trị
+        return $this->role === 'admin';
     }
 }
