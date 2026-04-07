@@ -13,25 +13,35 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->nullable()->constrained('customers')->nullOnDelete();
-            $table->foreignId('contract_id')->nullable()->constrained('contracts')->nullOnDelete();
+
+            $table->foreignId('customer_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('contract_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('assignee_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('creator_id')->nullable()->constrained('users')->nullOnDelete();
+
             $table->string('title', 300);
             $table->text('description')->nullable();
+
             $table->date('due_date')->nullable();
-            //$table->enum('priority', ['high', 'medium', 'low'])->default('medium');
-           // $table->enum('status', ['todo', 'in_progress', 'done', 'cancelled'])->default('todo');
-            $table->integer('priority')->default(2); // 1: high, 2: medium, 3: low
-            $table->integer('status')->default(1); // 1: todo, 2: in_progress, 3: done, 4: cancelled
+
+            $table->integer('priority')->default(2);
+            $table->integer('status')->default(1);
+
+            // 🔥 KANBAN
+            $table->integer('position')->default(0);
+            $table->decimal('sort', 20, 10)->default(0)->index();
+
+            $table->softDeletes();
+
+            // 🔥 TRACK TIME
+            $table->datetime('started_at')->nullable();
             $table->datetime('completed_at')->nullable();
-          
-            
+
             $table->timestamps();
 
+            $table->index(['status', 'position']);
             $table->index('assignee_id');
-            $table->index('status');
-            $table->index('due_date');
+            $table->index('creator_id');
         });
     }
 

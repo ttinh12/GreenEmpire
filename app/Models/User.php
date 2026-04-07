@@ -60,4 +60,16 @@ class User extends Authenticatable
         return $this->hasMany(Ticket::class, 'user_id');
 
     }
+
+    // Task mà user được ASSIGN thực hiện
+    public function assignedTasks(): HasMany
+    {
+        return $this->hasMany(Task::class, 'assignee_id');
+    }
+
+    // Task mà user đã TẠO
+    public function createdTasks(): HasMany
+    {
+        return $this->hasMany(Task::class, 'creator_id');
+    }
 }
