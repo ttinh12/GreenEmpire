@@ -22,6 +22,14 @@ class HomeController extends Controller
 
         return view('client.services.index', compact('services'));
     }
+    public function serviceDetail($id)
+    {
+        $service = DB::table('services')->where('id', $id)->first();
+        if (!$service)
+            abort(404);
+
+        return view('client.services.show', compact('service'));
+    }
     public function dashboard()
     {
         return view('client.dashboard');

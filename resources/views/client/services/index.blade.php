@@ -26,7 +26,7 @@ Danh mục Dịch vụ Nông nghiệp
                     <td>{{ number_format($service->base_price) }} VNĐ</td>
                     <td>{{ $service->unit }}</td>
                     <td>
-                        <a href="#" class="btn btn-sm btn-success">Đăng ký ngay</a>
+                        <a href="{{ route('services.show', $service->id) }}" class="btn btn-sm btn-success">Đăng ký ngay</a>
                     </td>
                 </tr>
             @empty

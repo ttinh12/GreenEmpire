@@ -39,7 +39,7 @@ Route::get('/tickets/create', [TicketController::class, 'create'])
     ->middleware(['auth'])
 
     ->name('ticket.create');
-
+Route::get('/services/{id}', [HomeController::class, 'serviceDetail'])->name('services.show');
 
 
 Route::post('/tickets/store', [TicketController::class, 'store'])
