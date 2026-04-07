@@ -16,7 +16,7 @@
                     <tr>
                         <td>{{ $ticket->id }}</td>
                         <td>{{ $ticket->title }}</td>
-                        <td>{{ $ticket->creator->name }}</td>
+                        <td>{{ $ticket->user->name }}</td>
                         <td><span class="badge bg-label-primary me-1">Hoạt động</span></td>
                     </tr>
                     @endforeach

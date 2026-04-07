@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('vat_rate', 5, 2)->default(10.00);
             $table->decimal('vat_amount', 18, 2)->default(0);
             $table->decimal('total_amount', 18, 2)->default(0);
-            $table->decimal('paid_amount', 18, 2)->default(0);
+            $table->decimal('paid_amount', 18, 2)->default(0);  
             $table->decimal('remaining', 18, 2)->storedAs('total_amount - paid_amount');
             // $table->enum('status', ['draft', 'sent', 'paid', 'partial', 'overdue', 'cancelled'])->default('draft');
             // $table->enum('payment_method', ['bank_transfer', 'cash', 'check', 'other'])->nullable();

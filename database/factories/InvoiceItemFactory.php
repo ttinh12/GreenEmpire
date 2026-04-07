@@ -10,18 +10,24 @@ class InvoiceItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'invoice_id' => Invoice::pluck('id')->random() ?? Invoice::factory(),
+            // Dùng inRandomOrder() để an toàn hơn cho team
+            'invoice_id' => Invoice::inRandomOrder()->first()?->id ?? Invoice::factory(),
+
             'item_order' => $this->faker->numberBetween(1, 5),
             'description' => $this->faker->randomElement([
-                'Dịch vụ cài đặt phần mềm', 
-                'Cung cấp thiết bị nông nghiệp', 
-                'Phí duy trì hệ thống tháng ' . now()->month,
-                'Tư vấn chuyển đổi số'
+                'Dịch vụ cài đặt phần mềm nông nghiệp',
+                'Cung cấp thiết bị cảm biến độ ẩm',
+                'Phí duy trì hệ thống GreenEmpire tháng ' . now()->month,
+                'Tư vấn chuyển đổi số nông nghiệp'
             ]),
             'unit' => $this->faker->randomElement(['gói', 'giờ', 'lô', 'bộ']),
-            'quantity' => $this->faker->numberBetween(1, 10),
-            'unit_price' => $this->faker->numberBetween(500000, 10000000),
+
+            // Dùng số thực cho khớp với kiểu decimal(10, 2) trong Migration
+            'quantity' => $this->faker->randomFloat(2, 1, 10),
+            'unit_price' => $this->faker->randomFloat(2, 500000, 10000000),
+
             'vat_rate' => 10.00,
+            // Tuyệt đối không thêm 'amount' vào đây
         ];
     }
 }
