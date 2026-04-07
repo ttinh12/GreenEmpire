@@ -1,7 +1,6 @@
 <?php
 
-
-
+use App\Http\Controllers\client\HomeController;
 use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\Route;
@@ -31,6 +30,9 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('tickets'));
 
 })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/services', [HomeController::class, 'service'])
+    ->middleware(['auth'])
+    ->name('services.index');
 
 Route::get('/tickets/create', [TicketController::class, 'create'])
 

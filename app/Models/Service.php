@@ -48,8 +48,13 @@ class Service extends Model
 
     // 5. Helper: Định dạng giá tiền cho đẹp (VD: 1.000.000đ)
     public function getFormattedPriceAttribute()
-{
-    // Ép kiểu về float để number_format không báo lỗi
-    return number_format((float) $this->base_price, 0, ',', '.') . ' VNĐ';
-}
+    {
+        // Ép kiểu về float để number_format không báo lỗi
+        return number_format((float) $this->base_price, 0, ',', '.') . ' VNĐ';
+    }
+    public function service()
+    {
+        $services = Service::paginate(10);
+        return view('client.services.index', compact('services'));
+    }
 }

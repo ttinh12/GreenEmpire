@@ -18,7 +18,9 @@ class HomeController extends Controller
     }
     public function service()
     {
-        return view('client.services.index');
+        $services = DB::table('services')->paginate(10);
+
+        return view('client.services.index', compact('services'));
     }
     public function dashboard()
     {

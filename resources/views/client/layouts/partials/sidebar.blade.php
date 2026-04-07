@@ -100,18 +100,17 @@
             <span class="menu-header-text">Dịch vụ</span>
         </li>
 
-        <!-- <li class="menu-item">
-            <a href="#" class="menu-link">
+        <li class="menu-item">
+            <a href="{{ route('services.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-file"></i>
-                <div>Danh sách Hợp đồng</div>
+                <div>Danh sách dịch vụ</div>
             </a>
-        </li> -->
-
+        </li>
         <li
             class="menu-item {{ request()->routeIs('ticket.*') && !request()->routeIs('dashboard') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-support"></i>
-                <div>Hỗ trợ (Tickets)</div>
+                <div>Hỗ trợ</div>
             </a>
             <ul class="menu-sub">
                 <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
