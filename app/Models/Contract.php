@@ -2,30 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contract extends Model
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'code', 'customer_id', 'department_id', 'title', 'description',
-        'value', 'vat_rate', 'vat_amount', 'total_value',
-        'start_date', 'end_date', 'signed_date', 'status',
-        'payment_terms', 'warranty_months', 'file_url', 'created_by', 'updated_by'
-    ];
-
-    public function customer(): BelongsTo {
-        return $this->belongsTo(Customer::class);
-    }
-
-    public function department(): BelongsTo {
-        return $this->belongsTo(Department::class);
-    }
-
-    public function creator(): BelongsTo {
-        return $this->belongsTo(User::class, 'created_by');
-    }
+    //
 }

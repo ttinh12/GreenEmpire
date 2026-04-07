@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->enum('type', ['call', 'email', 'meeting', 'visit', 'reminder', 'other'])->default('other');
+            //$table->enum('type', ['call', 'email', 'meeting', 'visit', 'reminder', 'other'])->default('other');
+            $table->integer('type')->default(6); // 1: call, 2: email, 3: meeting, 4: visit, 5: reminder, 6: other
             $table->string('title', 200)->nullable();
             $table->text('content');
             $table->datetime('note_date')->useCurrent();

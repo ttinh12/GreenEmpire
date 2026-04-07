@@ -17,8 +17,9 @@ class TicketsTable
             ->columns([
                 TextColumn::make('title')
                     ->searchable(),
+                    TextColumn::make('name')
+                    ->searchable(),
                 TextColumn::make('user.name')
-                    ->label('Người tạo')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('assignee.name')
@@ -26,13 +27,14 @@ class TicketsTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('priority')
-                    ->badge()
-                    ->formatStateUsing(fn ($state) => $state ? TicketPriority::from($state): '')
-                    ->color(fn(string $state): string => TicketPriority::from($state)->getColor())
+                    ->formatStateUsing(fn($state) => $state ? TicketPriority::from($state) : '')
+                    ->color(fn(string $state): string  => TicketPriority::from($state)->getColor())
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge()
+                 
                     ->sortable(),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

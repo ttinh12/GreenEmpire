@@ -7,9 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Department;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
-class User extends Authenticatable implements FilamentUser
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -55,13 +55,22 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsTo(Department::class);
     }
-    public function createdTickets()    
+
+    public function Ticket():HasMany
     {
         return $this->hasMany(Ticket::class, 'user_id');
+
     }
-    public function canAccessPanel(Panel $panel): bool
+
+    // Task mà user được ASSIGN thực hiện
+    public function assignedTasks(): HasMany
     {
-        // Chỉ cho phép những người có role là 'admin' vào trang quản trị
-        return $this->role === 'admin';
+        return $this->hasMany(Task::class, 'assignee_id');
+    }
+
+    // Task mà user đã TẠO
+    public function createdTasks(): HasMany
+    {
+        return $this->hasMany(Task::class, 'creator_id');
     }
 }

@@ -16,8 +16,8 @@ return new class extends Migration
 
             $table->string('code', 20)->unique(); // Mã khách hàng, vd: KH001 unique để tránh trùng lặp
             $table->string('name', 200); 
-            $table->enum('type', ['company', 'school', 'government', 'individual'])->default('company'); 
-            //$table->string('type', 20)->default('company');
+            //$table->enum('type', ['company', 'school', 'government', 'individual'])->default('company'); 
+            $table->integer('type')->default(1); // 1: company, 2: school, 3: government, 4: individual
             $table->text('address')->nullable();
             $table->string('province', 100)->nullable();
             $table->string('tax_code', 20)->nullable();
@@ -28,7 +28,8 @@ return new class extends Migration
             $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('account_manager_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('source', 100)->nullable();
-            $table->enum('status', ['active', 'potential', 'inactive'])->default('potential');
+            $table->integer('status')->default(1); // 1: active, 2: potential, 3: inactive
+            //$table->enum('status', ['active', 'potential', 'inactive'])->default('potential');
             //$table->string('status', 20)->default('potential');
             $table->text('notes')->nullable();
             $table->timestamps();

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('code', 20)->unique();
             $table->string('name', 100);
-            $table->enum('type', ['income', 'expense']);
+           // $table->enum('type', ['income', 'expense']);
+            $table->integer('type')->default(1); // 1: income, 2: expense
             $table->foreignId('parent_id')->nullable()->constrained('transaction_categories')->nullOnDelete();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

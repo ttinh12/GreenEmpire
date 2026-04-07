@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('reference_code', 50)->unique();
             $table->foreignId('department_id')->nullable()->constrained('departments')->nullOnDelete();
             $table->foreignId('category_id')->constrained('transaction_categories');
-            $table->enum('type', ['income', 'expense']);
+            //$table->enum('type', ['income', 'expense']);
+            $table->integer('type')->default(1); // 1: income, 2: expense
             $table->foreignId('contract_id')->nullable()->constrained('contracts')->nullOnDelete();
             $table->foreignId('invoice_id')->nullable()->constrained('invoices')->nullOnDelete();
             $table->decimal('amount', 18, 2);
