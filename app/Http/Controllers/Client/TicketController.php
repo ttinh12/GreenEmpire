@@ -34,19 +34,27 @@ class TicketController extends Controller
     /** 
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        Ticket::create([
-            'title' => $request->title,
-            'content' => $request->input('content'),
-            'assign_id' => $request->assign_id,
-            'user_id' => $request->user_id,
-            'status' => $request->status,
-        ]);
-        return redirect()->route('dashboard')->with('success', 'Yêu cầu của bạn đã được gửi thành công!');
+public function store(Request $request)
+{
+    // Validate dữ liệu
+    $request->validate([
+        'title'   => 'required|max:255',
+        'content' => 'required',
+    ]);
 
-    }
+    Ticket::create([
+        'title'     => $request->title,
+        'content'   => $request->input('content'),
+        'priority'  => $request->priority ?? 1,
+        'status'    => $request->status ?? 1,
+        'assign_id' => $request->assign_id ?: null, // Tránh gửi chuỗi rỗng
+        'user_id'   => auth()->id(),
+        // LẤY TÊN USER ĐĂNG NHẬP ĐỂ ĐIỀN VÀO CỘT NAME
+        'name'      => auth()->user()->name, 
+    ]);
 
+    return redirect()->route('dashboard')->with('success', 'Yêu cầu của bạn đã được gửi thành công!');
+}     
     /**
      * Display the specified resource.
      */
