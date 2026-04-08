@@ -11,11 +11,20 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // Sử dụng Auth::check() và Auth::user()
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        // 1. Kiểm tra xem đã đăng nhập chưa
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        // 2. Lấy role và chuyển về chữ thường để so sánh cho chuẩn
+        $role = strtolower(trim(Auth::user()->role));
+
+        // 3. Kiểm tra quyền admin
+        if ($role === 'admin') {
             return $next($request);
         }
 
+        // Nếu không phải admin, đá về trang chủ với thông báo
         return redirect('/')->with('error', 'Bạn không có quyền truy cập vùng này!');
     }
 }

@@ -8,8 +8,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
-class User extends Authenticatable
+use Filament\Panel;
+use Filament\Models\Contracts\FilamentUser;
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -56,7 +57,7 @@ class User extends Authenticatable
         return $this->belongsTo(Department::class);
     }
 
-    public function Ticket():HasMany
+    public function Ticket(): HasMany
     {
         return $this->hasMany(Ticket::class, 'user_id');
 
@@ -72,5 +73,9 @@ class User extends Authenticatable
     public function createdTasks(): HasMany
     {
         return $this->hasMany(Task::class, 'creator_id');
+    }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return strtolower($this->role) === 'admin';
     }
 }

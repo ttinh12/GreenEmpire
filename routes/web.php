@@ -59,6 +59,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 });
+// Chỉ Admin mới vào được nhóm này
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/custom-stats', function () {
+        return "Trang thống kê nội bộ của Admin";
+    });
+    // Thêm các route admin khác ở đây...
+});
 
 
 
