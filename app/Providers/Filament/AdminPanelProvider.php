@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
+            ->brandName('GreenEmpire')
             ->path('admin')
             ->login()
             ->colors([
