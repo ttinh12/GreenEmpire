@@ -13,6 +13,7 @@ use Filament\Tables\Filters\SelectFilter;
 use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
 use App\Models\User;
+use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
 
 class TicketsTable
@@ -46,22 +47,17 @@ class TicketsTable
                 TextColumn::make('priority')
                     ->label('Độ ưu tiên')
                     ->badge()
-                    ->color(fn ($state): string => is_object($state)
+                    ->color(fn($state): string => is_object($state)
                         ? $state->getColor()
                         : TicketPriority::from($state)->getColor())
-                    ->formatStateUsing(fn ($state): string => is_object($state)
+                    ->formatStateUsing(fn($state): string => is_object($state)
                         ? $state->getLabel()
                         : TicketPriority::from($state)->getLabel())
                     ->sortable(),
-                TextColumn::make('status')
+                SelectColumn::make('status')
                     ->label('Trạng thái')
-                    ->badge()
-                    ->color(fn ($state): string => is_object($state)
-                        ? $state->getColor()
-                        : TicketStatus::from($state)->getColor())
-                    ->formatStateUsing(fn ($state): string => is_object($state)
-                        ? $state->getLabel()
-                        : TicketStatus::from($state)->getLabel())
+                    ->options(TicketStatus::class) // Tự động lấy từ Enum
+                    ->selectablePlaceholder(false)
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Ngày tạo')
@@ -99,7 +95,7 @@ class TicketsTable
                     ->label('Nhận xử lý')
                     ->icon('heroicon-o-hand-raised')
                     ->color('success')
-                    ->visible(fn ($record) => $record->assign_id === null)
+                    ->visible(fn($record) => $record->assign_id === null)
                     ->action(function ($record) {
                         $record->update([
                             'assign_id' => auth()->id(),

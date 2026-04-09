@@ -12,6 +12,7 @@ use App\Enums\TicketPriority;
 use App\Enums\TicketStatus;
 use Illuminate\Support\Str;
 
+
 class TicketForm
 {
     public static function configure(Schema $schema): Schema
@@ -20,74 +21,77 @@ class TicketForm
             ->components([
                 TextInput::make('ticket_code')
                     ->label('Mã vé')
-                    ->default(function () {
-                        // Auto-generate ticket code: TK-2026-001, TK-2026-002, etc.
-                        $year = date('Y');
-                        $lastTicket = \App\Models\Ticket::where('ticket_code', 'like', "TK-{$year}-%")
-                            ->orderBy('id', 'desc')
-                            ->first();
+                    ->placeholder('Hệ thống tự tạo...')
+                    ->default(function ($context) {
+                        if ($context === 'create') {
+                            $year = date('Y');
+                            $lastTicket = \App\Models\Ticket::where('ticket_code', 'like', "TK-{$year}-%")
+                                ->orderBy('id', 'desc')
+                                ->first();
 
-                        if ($lastTicket) {
-                            $lastNumber = (int) Str::afterLast($lastTicket->ticket_code, '-');
-                            $newNumber = $lastNumber + 1;
-                        } else {
-                            $newNumber = 1;
+                            if ($lastTicket) {
+                                $lastNumber = (int) Str::afterLast($lastTicket->ticket_code, '-');
+                                $newNumber = $lastNumber + 1;
+                            } else {
+                                $newNumber = 1;
+                            }
+                            return sprintf('TK-%s-%03d', $year, $newNumber);
                         }
-
-                        return sprintf('TK-%s-%03d', $year, $newNumber);
+                        return null;
                     })
-                    ->readonly()
-                    ->unique(ignoreRecord: true)
-                    ->required(),
+                    ->required(fn($context) => $context === 'create')
+                    ->disabled(fn($context) => $context === 'edit')
+                    ->dehydrated()
+                    ->maxLength(50),
 
                 TextInput::make('title')
                     ->label('Tiêu đề')
                     ->required()
                     ->maxLength(255)
-                    ->disabled(fn (string $context): bool => $context === 'edit'),
+                    // Dùng logic context để khóa khi edit
+                    ->disabled(fn($context) => $context === 'edit'),
 
                 Textarea::make('content')
                     ->label('Nội dung')
                     ->required()
                     ->columnSpanFull()
                     ->rows(4)
-                    ->disabled(fn (string $context): bool => $context === 'edit'),
+                    ->disabled(fn($context) => $context === 'edit'),
 
                 Select::make('user_id')
                     ->label('Khách hàng')
-                    ->options(User::where('role', 'customer')->pluck('name', 'id'))
+                    ->relationship('user', 'name') // Phải có hàm user() trong Model Ticket
                     ->searchable()
+                    ->preload()
                     ->required()
-                    ->default(auth()->id()), // Auto-set to current user if client
+                    // Chỉ set mặc định khi tạo mới, Edit thì giữ nguyên của record
+                    ->default(fn($context) => $context === 'create' ? auth()->id() : null),
 
+                // CHỈNH NHÂN VIÊN: Dùng relationship thay vì options để hiện tên
                 Select::make('assign_id')
                     ->label('Nhân viên xử lý')
-                    ->options(User::where('role', 'admin')->orWhere('role', 'staff')->pluck('name', 'id'))
+                    ->relationship('assignee', 'name', function ($query) {
+                        // Chỉ hiện những người là admin hoặc staff
+                        return $query->whereIn('role', ['admin', 'staff']);
+                    })
                     ->searchable()
+                    ->preload()
                     ->placeholder('Chọn nhân viên xử lý'),
 
                 Select::make('priority')
                     ->label('Độ ưu tiên')
-                    ->options([
-                        TicketPriority::ACTIVE->value => TicketPriority::ACTIVE->getLabel(),
-                        TicketPriority::INACTIVE->value => TicketPriority::INACTIVE->getLabel(),
-                        TicketPriority::BANED->value => TicketPriority::BANED->getLabel(),
-                    ])
+                    // Cách gọi Enum này gọn hơn nè
+                    ->options(TicketPriority::class)
                     ->default(TicketPriority::ACTIVE->value)
+                    ->native(false) // Cho giao diện hiện đại hơn
                     ->required(),
 
                 Select::make('status')
                     ->label('Trạng thái')
-                    ->options([
-                        TicketStatus::ACTIVE->value => TicketStatus::ACTIVE->getLabel(),
-                        TicketStatus::INACTIVE->value => TicketStatus::INACTIVE->getLabel(),
-                        TicketStatus::BANNED->value => TicketStatus::BANNED->getLabel(),
-                    ])
+                    ->options(TicketStatus::class)
                     ->default(TicketStatus::ACTIVE->value)
+                    ->native(false)
                     ->required(),
-
-                Hidden::make('created_by')
-                    ->default(auth()->id()),
             ]);
     }
 }
