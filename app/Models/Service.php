@@ -10,6 +10,9 @@ class Service extends Model
 {
     use HasFactory;
 
+    public const STATUS_INACTIVE = 0;
+    public const STATUS_ACTIVE = 1;
+
     // 1. Cho phép các trường này được thêm/sửa hàng loạt (Mass Assignment)
     protected $fillable = [
         'name',
@@ -25,7 +28,7 @@ class Service extends Model
     // 2. Ép kiểu dữ liệu để khi lấy ra dùng không bị lỗi định dạng
     protected $casts = [
         'base_price' => 'decimal:2',
-        'status' => 'string', // Hoặc dùng Enum nếu bạn đã tạo ServiceStatus
+        'status' => 'integer', 
     ];
 
     // 3. Boot method: Tự động tạo slug từ tên dịch vụ khi bạn lưu
@@ -37,6 +40,10 @@ class Service extends Model
             if (empty($service->slug)) {
                 $service->slug = Str::slug($service->name);
             }
+
+            if (empty($service->status)) {
+                $service->status = self::STATUS_ACTIVE;
+            }
         });
     }
 
@@ -46,15 +53,18 @@ class Service extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public static function statusLabels(): array
+    {
+        return [
+            self::STATUS_INACTIVE => 'Tạm ngưng',
+            self::STATUS_ACTIVE => 'Đang hoạt động',
+        ];
+    }
+
     // 5. Helper: Định dạng giá tiền cho đẹp (VD: 1.000.000đ)
     public function getFormattedPriceAttribute()
     {
         // Ép kiểu về float để number_format không báo lỗi
         return number_format((float) $this->base_price, 0, ',', '.') . ' VNĐ';
-    }
-    public function service()
-    {
-        $services = Service::paginate(10);
-        return view('client.services.index', compact('services'));
     }
 }

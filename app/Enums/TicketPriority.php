@@ -15,9 +15,9 @@ enum TicketPriority: string implements HasLabel, HasIcon, HasColor
     public function getLabel(): string
     {
         return match ($this) {
-            self::ACTIVE => 'hoat dong',
-            self::INACTIVE => 'khong hoat dong',
-            self::BANED => 'bi ban',
+            self::ACTIVE => 'hoạt động',
+            self::INACTIVE => 'không hoạt động',
+            self::BANED => 'bị cấm',
         };
     }
 
