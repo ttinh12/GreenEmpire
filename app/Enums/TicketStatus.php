@@ -18,25 +18,25 @@ enum TicketStatus: string implements HasLabel, HasIcon, HasColor
     public function getLabel(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Hoạt động',
-            self::INACTIVE => 'Không hoạt động',
-            self::BANNED => 'Bị cấm',
+            self::ACTIVE => 'Chờ xử lý',
+            self::INACTIVE => 'Đã được giao cho nhân viên',
+            self::BANNED => 'Đã hoàn thành',
         };
     }
     public function getIcon(): string | BackedEnum
     {
         return match ($this) {
             self::ACTIVE => Heroicon::CheckCircle,
-            self::INACTIVE => Heroicon::XCircle,
-            self::BANNED => Heroicon::XCircle,
+            self::INACTIVE => Heroicon::CheckCircle,
+            self::BANNED => Heroicon::CheckCircle,
         };
     }
     public function getColor(): string
     {
         return match ($this) {
-            self::ACTIVE => 'success',
+            self::ACTIVE => 'warning',
             self::INACTIVE => 'secondary',
-            self::BANNED => 'danger',
+            self::BANNED => 'success',
         };
     }
 }

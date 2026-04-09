@@ -5,6 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
+use Filament\Support\Icons\Heroicon;
 
 enum TicketPriority: string implements HasLabel, HasIcon, HasColor
 {
@@ -15,9 +16,9 @@ enum TicketPriority: string implements HasLabel, HasIcon, HasColor
     public function getLabel(): string
     {
         return match ($this) {
-            self::ACTIVE => 'hoạt động',
-            self::INACTIVE => 'không hoạt động',
-            self::BANED => 'bị cấm',
+            self::ACTIVE => 'Thấp',
+            self::INACTIVE => 'Trung bình',
+            self::BANED => 'Cao',
         };
     }
 
@@ -26,9 +27,10 @@ enum TicketPriority: string implements HasLabel, HasIcon, HasColor
         return match ($this) {
             self::ACTIVE => 'heroicon-o-check-circle',
             self::INACTIVE => 'heroicon-o-x-circle',
-            self::BANED => 'heroicon-o-ban',
+            self::BANED => 'heroicon-o-no-symbol',
         };
     }
+
     public function getColor(): string
     {
         return match ($this) {
