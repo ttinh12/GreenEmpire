@@ -15,7 +15,6 @@ use App\Enums\TicketStatus;
 use App\Models\User;
 use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
-
 class TicketsTable
 {
     public static function configure(Table $table): Table
