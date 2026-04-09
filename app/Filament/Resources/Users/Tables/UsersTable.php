@@ -28,6 +28,24 @@ class UsersTable
 
                 TextColumn::make('email')
                     ->searchable(),
+                // 🔥 THÊM CỘT ROLES (đồng bộ với Shield)
+                TextColumn::make('roles.name')
+                    ->label('Vai trò')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'admin' => 'danger',
+                        'manager' => 'warning',
+                        'staff' => 'success',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn($state) => match ($state) {
+                        'admin' => '👑 Admin',
+                        'manager' => '📋 Manager',
+                        'staff' => '👤 Staff',
+                        default => $state,
+                    })
+                    ->sortable()
+                    ->searchable(),
 
                 IconColumn::make('is_active') // 🔥 FIX
                     ->boolean(),

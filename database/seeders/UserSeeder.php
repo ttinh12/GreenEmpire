@@ -14,23 +14,74 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Đảm bảo có ít nhất một phòng ban để gán cho User
-        // Nếu bảng departments trống, tạo tạm 1 cái để không bị lỗi khóa ngoại
         $deptId = Department::value('id') ?? Department::factory()->create(['name' => 'Ban Giám Đốc'])->id;
 
-        // 2. Tạo 1 User cố định để nhóm mình dễ đăng nhập test
+        // 1. Super Admin (thêm vào để đồng bộ Shield)
         User::updateOrCreate(
-            ['email' => 'admin@greenempire.com'], // Tránh trùng lặp nếu chạy seeder nhiều lần
+            ['email' => 'superadmin@greenempire.com'],
             [
-                'name' => 'Quản Trị Viên',
-                'password' => Hash::make('123456'), // Mật khẩu dễ nhớ cho cả nhóm
-                'department_id' => $deptId,
-                'is_active' => 1,
+                'name'              => 'Super Quản Trị Viên',
+                'password'          => Hash::make('123456'),
+                'department_id'     => $deptId,
+                'is_active'         => 1,
                 'email_verified_at' => now(),
             ]
         );
 
-        // 3. Tạo thêm 10 User mẫu ngẫu nhiên bằng Factory
+        // 2. Admin
+        User::updateOrCreate(
+            ['email' => 'admin@greenempire.com'],
+            [
+                'name'              => 'Quản Trị Viên',
+                'password'          => Hash::make('123456'),
+                'department_id'     => $deptId,
+                'is_active'         => 1,
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // 3. Manager
+        User::updateOrCreate(
+            ['email' => 'manager@greenempire.com'],
+            [
+                'name'              => 'Quản Lý',
+                'password'          => Hash::make('123456'),
+                'department_id'     => $deptId,
+                'is_active'         => 1,
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // 4. Staff
+        User::updateOrCreate(
+            ['email' => 'staff@greenempire.com'],
+            [
+                'name'              => 'Nhân Viên',
+                'password'          => Hash::make('123456'),
+                'department_id'     => $deptId,
+                'is_active'         => 1,
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // 5. Random users
         User::factory()->count(10)->create();
+
+        // Gán roles (chạy sau khi Shield đã setup)
+        $superAdminUser = User::where('email', 'superadmin@greenempire.com')->first();
+        $adminUser      = User::where('email', 'admin@greenempire.com')->first();
+        $managerUser    = User::where('email', 'manager@greenempire.com')->first();
+        $staffUser      = User::where('email', 'staff@greenempire.com')->first();
+
+        // Gán role theo Shield chuẩn
+        if (\Spatie\Permission\Models\Role::where('name', 'super_admin')->exists()) {
+            $superAdminUser->syncRoles(['super_admin']); // Cấp toàn quyền
+        }
+
+        if (\Spatie\Permission\Models\Role::where('name', 'admin')->exists()) {
+            $adminUser->syncRoles(['admin']);
+            $managerUser->syncRoles(['manager']);
+            $staffUser->syncRoles(['staff']);
+        }
     }
 }

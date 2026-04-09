@@ -10,10 +10,12 @@ use App\Models\Department;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
+use Spatie\Permission\Traits\HasRoles;
+use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles, HasPanelShield; // ← thêm 2 trait
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +24,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
-        'role', // admin hoặc customer
+        'role', 
         'avatar_url',
         'is_active',
         'last_login_at',
@@ -60,7 +62,6 @@ class User extends Authenticatable implements FilamentUser
     public function Ticket(): HasMany
     {
         return $this->hasMany(Ticket::class, 'user_id');
-
     }
 
     // Task mà user được ASSIGN thực hiện
@@ -74,8 +75,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Task::class, 'creator_id');
     }
+   
     public function canAccessPanel(Panel $panel): bool
     {
-        return strtolower($this->role) === 'admin';
+          return true;
     }
 }

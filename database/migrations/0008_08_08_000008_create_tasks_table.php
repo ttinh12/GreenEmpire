@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('title', 300);
             $table->text('description')->nullable();
 
-            $table->date('due_date')->nullable();
+             $table->date('due_date')->nullable();
 
             $table->integer('priority')->default(2);
             $table->integer('status')->default(1);

@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
         TransactionSeeder::class,
         TaskSeeder::class,
         CustomerNoteSeeder::class,
+         RoleSeeder::class,
     ]);
 
     // user random
