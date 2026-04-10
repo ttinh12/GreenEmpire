@@ -25,6 +25,7 @@ class RoleSeeder extends Seeder
             'ViewAny:Ticket',
             'View:Ticket',
             'Create:Ticket',
+            
             'Update:Ticket',
             'Delete:Ticket',
             'DeleteAny:Ticket',
