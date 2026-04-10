@@ -7,7 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-enum UserStatus: string implements HasLabel, HasChildComponents
+enum UserStatus: string implements HasLabel
 {
     case ACTIVE = '1';
     case INACTIVE = '3';
@@ -21,5 +21,4 @@ enum UserStatus: string implements HasLabel, HasChildComponents
             self::BANNED => 'Cao',
         };
     }
-    public function getIcon
 }
