@@ -31,8 +31,8 @@ class DatabaseSeeder extends Seeder
         TransactionSeeder::class,
         TaskSeeder::class,
         CustomerNoteSeeder::class,
-         RoleSeeder::class,
-    ]);
+        RoleSeeder::class,
+    ]); 
 
     // user random
     User::factory()->count(5)->create();
