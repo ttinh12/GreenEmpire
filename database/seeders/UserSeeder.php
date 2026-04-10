@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'superadmin@greenempire.com'],
             [
+                'id'                => 1, // Cố định ID = 1 cho Super Admin
                 'name'              => 'Super Quản Trị Viên',
                 'password'          => Hash::make('123456'),
                 'department_id'     => $deptId,
