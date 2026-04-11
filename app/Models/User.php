@@ -12,7 +12,8 @@ use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
 use Spatie\Permission\Traits\HasRoles;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
-class User extends Authenticatable implements FilamentUser
+use Filament\Models\Contracts\HasAvatar;
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles, HasPanelShield; // ← thêm 2 trait
@@ -59,6 +60,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsTo(Department::class);
     }
 
+    public function createdService(): HasMany
+    {
+        return $this->hasMany(Service::class, 'created_by', 'id');
+    }
+
     public function Ticket(): HasMany
     {
         return $this->hasMany(Ticket::class, 'user_id');
@@ -80,4 +86,13 @@ class User extends Authenticatable implements FilamentUser
     {
           return true;
     }
+    public function getFilamentAvatarUrl(): ?string
+    {
+        // Kiểm tra nếu có ảnh thì trả về link, không thì null
+        // asset('storage/...') sẽ tạo ra link: http://localhost:8000/storage/đường-dẫn-ảnh
+        return $this->avatar_url 
+            ? asset('storage/' . $this->avatar_url) 
+            : null;
+    }
+
 }
