@@ -17,6 +17,7 @@ use Filament\Tables\Table;
 use App\Filament\Resources\Users\RelationManagers\CreatedTasksRelationManager;
 use App\Filament\Resources\Users\RelationManagers\AssignedTasksRelationManager;
 
+
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
@@ -38,8 +39,10 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
+
             CreatedTasksRelationManager::class,
             AssignedTasksRelationManager::class,
+            CreatedServiceRelationManager::class,
         ];
     }
 
