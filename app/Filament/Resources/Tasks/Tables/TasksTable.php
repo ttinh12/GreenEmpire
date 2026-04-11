@@ -31,7 +31,7 @@ class TasksTable
                     ->label('Trạng thái')
                     ->badge()
                     ->formatStateUsing(fn($state) => Task::statusLabels()[$state] ?? $state)
-                    ->color(fn($state) => match((int)$state) {
+                    ->color(fn($state) => match ((int)$state) {
                         Task::STATUS_TODO        => 'gray',
                         Task::STATUS_IN_PROGRESS => 'warning',
                         Task::STATUS_REVIEW      => 'info',
@@ -43,7 +43,7 @@ class TasksTable
                     ->label('Ưu tiên')
                     ->badge()
                     ->formatStateUsing(fn($state) => Task::priorityLabels()[$state] ?? $state)
-                    ->color(fn($state) => match((int)$state) {
+                    ->color(fn($state) => match ((int)$state) {
                         Task::PRIORITY_LOW    => 'gray',
                         Task::PRIORITY_MEDIUM => 'info',
                         Task::PRIORITY_HIGH   => 'warning',
@@ -104,17 +104,18 @@ class TasksTable
 
                 Filter::make('overdue')
                     ->label('⚠️ Quá hạn')
-                    ->query(fn(Builder $query) =>
+                    ->query(
+                        fn(Builder $query) =>
                         $query->whereNotNull('due_date')
-                              ->whereDate('due_date', '<', now())
-                              ->where('status', '!=', Task::STATUS_DONE)
+                            ->whereDate('due_date', '<', now())
+                            ->where('status', '!=', Task::STATUS_DONE)
                     ),
 
                 Filter::make('my_tasks')
                     ->label('📋 Task của tôi')
-                    // ->query(fn(Builder $query) =>
-                    //     $query->where('assignee_id', auth()->id())
-                    // ),
+                // ->query(fn(Builder $query) =>
+                //     $query->where('assignee_id', auth()->id())
+                // ),
             ])
             ->recordActions([
                 Action::make('kanban')
@@ -156,5 +157,6 @@ class TasksTable
             ])
             ->defaultSort('sort')
             ->striped();
+
     }
 }

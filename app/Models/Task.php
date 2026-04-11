@@ -87,6 +87,8 @@ class Task extends Model
         return $this->belongsTo(Contract::class);
     }
 
+   
+
     // ──────────────── HELPERS ────────────────
     public function getStatusLabelAttribute(): string
     {

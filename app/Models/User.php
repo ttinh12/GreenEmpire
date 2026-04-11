@@ -73,14 +73,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     // Task mà user được ASSIGN thực hiện
     public function assignedTasks(): HasMany
     {
-        return $this->hasMany(Task::class, 'assignee_id');
+        return $this->hasMany(Task::class, 'assignee_id', 'id');
     }
 
     // Task mà user đã TẠO
     public function createdTasks(): HasMany
     {
-        return $this->hasMany(Task::class, 'creator_id');
+        return $this->hasMany(Task::class, 'creator_id', 'id');
     }
+
+    
    
     public function canAccessPanel(Panel $panel): bool
     {

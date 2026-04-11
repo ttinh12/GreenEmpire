@@ -14,7 +14,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use GuzzleHttp\Promise\Create;
+use App\Filament\Resources\Users\RelationManagers\CreatedTasksRelationManager;
+use App\Filament\Resources\Users\RelationManagers\AssignedTasksRelationManager;
 
 class UserResource extends Resource
 {
@@ -37,7 +38,8 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            CreatedServiceRelationManager::class,
+            CreatedTasksRelationManager::class,
+            AssignedTasksRelationManager::class,
         ];
     }
 
