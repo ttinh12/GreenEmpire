@@ -6,8 +6,13 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Grouping\Group;
+use App\Enums\InvoiceStatus;
+use App\Enums\PaymentMethod;
+
 
 class InvoicesTable
 {
@@ -19,29 +24,29 @@ class InvoicesTable
                     ->label('Mã hóa đơn')
                     ->searchable(),
 
-                TextColumn::make('contract_id')
+                TextColumn::make('contract.code')
                     ->label('Mã hợp đồng')
                     ->numeric()
                     ->sortable(),
 
-                TextColumn::make('customer_id')
+                TextColumn::make('customer.name')
                     ->label('Mã khách hàng')
                     ->numeric()
                     ->sortable(),
 
-                TextColumn::make('department_id')
+                TextColumn::make('department.name')
                     ->label('Phòng ban')
                     ->numeric()
                     ->sortable(),
 
                 TextColumn::make('issue_date')
                     ->label('Ngày lập')
-                    ->date()
+                    ->formatStateUsing(fn($state) => $state ? date('d/m/Y', strtotime($state)) : null)
                     ->sortable(),
 
                 TextColumn::make('due_date')
                     ->label('Hạn thanh toán')
-                    ->date()
+                    ->formatStateUsing(fn($state) => $state ? date('d/m/Y', strtotime($state)) : null)
                     ->sortable(),
 
                 TextColumn::make('subtotal')
@@ -67,6 +72,9 @@ class InvoicesTable
                 TextColumn::make('paid_amount')
                     ->label('Đã thanh toán')
                     ->numeric()
+                    ->summarize(Sum::make()->prefix('Total volume: '))
+
+
                     ->sortable(),
 
                 TextColumn::make('remaining')
@@ -75,22 +83,23 @@ class InvoicesTable
                     ->sortable(),
 
                 TextColumn::make('status')
-                    ->label('Trạng thái')
-                    ->badge()
-                    ->colors([
-                        'success' => 'paid',
-                        'warning' => 'pending',
-                        'danger' => 'unpaid',
-                    ]),
+    ->label('Trạng thái')
+    ->badge()
+    ->formatStateUsing(fn (InvoiceStatus $state) => $state->label())
+    ->color(fn (InvoiceStatus $state) => $state->color()),
+
 
                 TextColumn::make('payment_method')
-                    ->label('Phương thức thanh toán')
-                    ->badge(),
+    ->label('Phương thức thanh toán')
+    ->badge()
+    ->formatStateUsing(fn (PaymentMethod $state) => $state->label()),
 
-                TextColumn::make('created_by')
-                    ->label('Người tạo')
-                    ->numeric()
-                    ->sortable(),
+
+                TextColumn::make('creator.name')
+    ->label('Người tạo')
+    ->searchable()
+    ->sortable(),
+
 
                 TextColumn::make('created_at')
                     ->label('Ngày tạo')
@@ -107,6 +116,14 @@ class InvoicesTable
             ->filters([
                 //
             ])
+            ->groups([
+                Group::make('department.name')
+                    ->collapsible(),
+                Group::make('customer.name')
+                    ->collapsible(),
+            ])
+            // ->defaultGroup('department.name')
+
             ->recordActions([
                 ViewAction::make()
                     ->label('Xem'),

@@ -19,11 +19,10 @@ public function definition(): array
     
     // Sửa logic Status sang dạng SỐ
     // 1: draft, 2: sent, 3: paid, 4: partial, 5: overdue
-    $status = $this->faker->randomElement([1, 2, 3, 4, 5]); 
+    $status = $this->faker->randomElement([1, 2, 3]); 
     
     $paidAmount = 0;
     if ($status === 3) $paidAmount = $totalAmount; // Status là 3 (Paid)
-    if ($status === 4) $paidAmount = $totalAmount / 2; // Status là 4 (Partial)
 
     return [
         'code' => 'INV-' . strtoupper($this->faker->unique()->bothify('??####')),

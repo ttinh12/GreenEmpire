@@ -14,13 +14,23 @@ class InvoiceItem extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'invoice_id', 'item_order', 'description', 
-        'unit', 'quantity', 'unit_price', 'vat_rate'
+        'invoice_id',
+        'service_id',
+        'item_order',
+        'description',
+        'unit',
+        'quantity',
+        'unit_price',
+        'vat_rate'
     ];
 
     // Quan hệ: Một dòng chi tiết thuộc về một hóa đơn
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(Invoice::class);
+    }
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
     }
 }
