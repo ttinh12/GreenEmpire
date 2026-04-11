@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Service extends Model
 {
@@ -13,7 +14,6 @@ class Service extends Model
     public const STATUS_INACTIVE = 0;
     public const STATUS_ACTIVE = 1;
 
-    // 1. Cho phép các trường này được thêm/sửa hàng loạt (Mass Assignment)
     protected $fillable = [
         'name',
         'slug',
@@ -25,13 +25,11 @@ class Service extends Model
         'created_by',
     ];
 
-    // 2. Ép kiểu dữ liệu để khi lấy ra dùng không bị lỗi định dạng
     protected $casts = [
         'base_price' => 'decimal:2',
         'status' => 'integer', 
     ];
 
-    // 3. Boot method: Tự động tạo slug từ tên dịch vụ khi bạn lưu
     protected static function boot()
     {
         parent::boot();
@@ -47,10 +45,16 @@ class Service extends Model
         });
     }
 
-    // 4. Quan hệ: Một dịch vụ được tạo bởi một User
+    // Người tạo service
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    // Quan hệ invoice items
+    public function invoiceItems(): HasMany
+    {
+        return $this->hasMany(InvoiceItem::class);
     }
 
     public static function statusLabels(): array
@@ -61,10 +65,8 @@ class Service extends Model
         ];
     }
 
-    // 5. Helper: Định dạng giá tiền cho đẹp (VD: 1.000.000đ)
     public function getFormattedPriceAttribute()
     {
-        // Ép kiểu về float để number_format không báo lỗi
         return number_format((float) $this->base_price, 0, ',', '.') . ' VNĐ';
     }
 }
