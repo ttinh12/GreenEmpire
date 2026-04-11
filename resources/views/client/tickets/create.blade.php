@@ -11,48 +11,34 @@
 
                     <div class="mb-3">
                         <label for="title" class="form-label">Tiêu đề</label>
-                        <input type="text" class="form-control" id="title" name="title" placeholder="VD: Lỗi đăng nhập..."
-                            required>
+                        <input type="text" class="form-control" id="title" name="title" 
+                               placeholder="VD: Lỗi đăng nhập, yêu cầu hỗ trợ nông sản..." required>
                     </div>
 
                     <div class="mb-3">
                         <label for="content" class="form-label">Nội dung chi tiết</label>
-                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                        <textarea class="form-control" id="content" name="content" rows="5" 
+                                  placeholder="Mô tả chi tiết vấn đề bạn đang gặp phải..." required></textarea>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="priority" class="form-label">Mức độ ưu tiên</label>
                             <select name="priority" id="priority" class="form-select">
-                                <option value="1" selected>Thấp</option>
+                                <option value="1">Thấp</option>
                                 <option value="2" selected>Trung bình</option>
                                 <option value="3">Cao</option>
                             </select>
                         </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label for="assign_id" class="form-label">Giao cho nhân viên</label>
-                            <select name="assign_id" id="assign_id" class="form-select">
-                                <option value="">-- Chọn người xử lý --</option>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endforeach
-                            </select>
+                        
+                        <div class="col-md-6 mb-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary me-2">Gửi yêu cầu</button>
+                            <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Hủy</a>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="status" class="form-label">Trạng thái</label>
-                            <select name="status" id="status" class="form-select">
-                                <option value="1" selected>Hoạt động</option>
-                                <option value="2" selected>Không hoạt động</option>
-                                <option value="3">Bị cấm</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
-                            <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Hủy</a>
+
+                    {{-- Gửi ngầm user_id của người đang đăng nhập --}}
+                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                 </form>
             </div>
         </div>

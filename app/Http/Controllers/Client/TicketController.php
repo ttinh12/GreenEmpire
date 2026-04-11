@@ -28,36 +28,37 @@ class TicketController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('client.tickets.create', compact('users'));
-    }
-    /** 
-     * Store a newly created resource in storage.
-     */
-public function store(Request $request)
-{
-    // Validate dữ liệu
-    $request->validate([
-        'title'   => 'required|max:255',
-        'content' => 'required',
-    ]);
+        // Không cần $users = User::all() nữa
+        return view('client.tickets.create');
+    }    /** 
+         * Store a newly created resource in storage.
+         */
+    public function store(Request $request)
+    {
+        // 1. Validate dữ liệu tối thiểu cần thiết
+        $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'priority' => 'nullable|integer|in:1,2,3', // Đảm bảo priority nằm trong khoảng cho phép
+        ]);
 
-    Ticket::create([
-        'title'     => $request->title,
-        'content'   => $request->input('content'),
-        'priority'  => $request->priority ?? 1,
-        'status'    => $request->status ?? 1,
-        'assign_id' => $request->assign_id ?: null, // Tránh gửi chuỗi rỗng
-        'user_id'   => auth()->id(),
-        // LẤY TÊN USER ĐĂNG NHẬP ĐỂ ĐIỀN VÀO CỘT NAME
-        'name'      => auth()->user()->name, 
-    ]);
+        // 2. Tạo Ticket với các giá trị được chỉ định sẵn
+        Ticket::create([
+            'title' => $request->title,
+            'content' => $request->input('content'),
+            'priority' => $request->priority ?? 2, // Mặc định là Trung bình (2) nếu không chọn
 
-    return redirect()->route('dashboard')->with('success', 'Yêu cầu của bạn đã được gửi thành công!');
-}     
-    /**
-     * Display the specified resource.
-     */
+            // GIÁ TRỊ ÉP CỨNG:
+            'status' => 1,      // Luôn là 1 (Hoạt động/Mới tạo)
+            'assign_id' => null,   // Luôn là null (Để Admin vào giao sau)
+
+            // THÔNG TIN NGƯỜI TẠO:
+            'user_id' => auth()->id(),
+            'name' => auth()->user()->name,
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Yêu cầu của bạn đã được gửi thành công!');
+    }   
     public function show(string $id)
     {
         return view('client.tickets.show');
