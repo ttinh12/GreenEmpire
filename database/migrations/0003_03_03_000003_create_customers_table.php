@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('website', 300)->nullable();
             $table->string('email', 150)->nullable();
             $table->string('phone', 20)->nullable();
-            $table->string('fax', 20)->nullable();
+            $table->string('fax', 20)->nullable(); 
             $table->foreignId('department_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('account_manager_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('source', 100)->nullable();
