@@ -83,22 +83,22 @@ class InvoicesTable
                     ->sortable(),
 
                 TextColumn::make('status')
-    ->label('Trạng thái')
-    ->badge()
-    ->formatStateUsing(fn (InvoiceStatus $state) => $state->label())
-    ->color(fn (InvoiceStatus $state) => $state->color()),
+                    ->label('Trạng thái')
+                    ->badge()
+                    ->formatStateUsing(fn(InvoiceStatus $state) => $state->label())
+                    ->color(fn(InvoiceStatus $state) => $state->color()),
 
 
                 TextColumn::make('payment_method')
-    ->label('Phương thức thanh toán')
-    ->badge()
-    ->formatStateUsing(fn (PaymentMethod $state) => $state->label()),
+                    ->label('Phương thức thanh toán')
+                    ->badge()
+                    ->formatStateUsing(fn(PaymentMethod $state) => $state->label()),
 
 
                 TextColumn::make('creator.name')
-    ->label('Người tạo')
-    ->searchable()
-    ->sortable(),
+                    ->label('Người tạo')
+                    ->searchable()
+                    ->sortable(),
 
 
                 TextColumn::make('created_at')
