@@ -45,7 +45,7 @@ return new class extends Migration
 
             $table->string('file_url', 500)->nullable();
 
-            $table->foreignId('created_by')
+            $table->foreignId('created_by') 
                 ->nullable()
                 ->constrained('users')
                 ->nullOnDelete();
