@@ -97,4 +97,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             : null;
     }
 
+
+    public function customers()
+{
+    return $this->hasMany(Customer::class, 'account_manager_id');
 }
+
+}
+

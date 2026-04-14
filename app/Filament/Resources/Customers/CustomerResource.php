@@ -7,6 +7,8 @@ use App\Filament\Resources\Customers\Pages\EditCustomer;
 use App\Filament\Resources\Customers\Pages\ListCustomers;
 use App\Filament\Resources\Customers\Schemas\CustomerForm;
 use App\Filament\Resources\Customers\Tables\CustomersTable;
+use App\Filament\Resources\Customers\RelationManagers\InvoicesRelationManager;
+use App\Filament\Resources\Customers\RelationManagers\TasksRelationManager;
 use App\Models\Customer;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -35,7 +37,8 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            InvoicesRelationManager::class,
+            TasksRelationManager::class,
         ];
     }
 

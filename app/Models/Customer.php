@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Department;
+use App\Models\Invoice;
+use App\Models\Task;
 
 class Customer extends Model
 {
@@ -29,9 +31,6 @@ class Customer extends Model
         'source',
         'status',
         'notes',
-
-
-
     ];
 
     protected $casts = [
@@ -60,4 +59,14 @@ class Customer extends Model
     // {
     //     return $this->hasMany(CustomerNote::class);
     // }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

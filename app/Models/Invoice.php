@@ -115,4 +115,6 @@ class Invoice extends Model
     {
         return number_format($this->remaining ?? 0, 0, ',', '.') . ' VNĐ';
     }
+
+    
 }
