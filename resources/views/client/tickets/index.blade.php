@@ -27,19 +27,12 @@ use App\Enums\TicketStatus;
                     <tr>
                         <td>{{ $ticket->id }}</td>
                         <td>{{ $ticket->title }}</td>
-                        <td>{{ Str::limit($ticket->content, 30) }}</td>
-                        <td>{{ $ticket->creator->name ?? 'N/A' }}</td>
+                        <td>{{ $ticket->user->name ?? 'N/A' }}</td>
                         <td>{{ $ticket->assignee->name ?? 'Chưa giao' }}</td>
                         <td>
-                            @php
-                                $statusEnum = $ticket->status instanceof TicketStatus
-                                    ? $ticket->status
-                                    : TicketStatus::tryFrom($ticket->status);
-                            @endphp
-
-                            @if($statusEnum)
-                                <span class="badge bg-{{ $statusEnum->getColor() }}">
-                                    {{ $statusEnum->getLabel() }}
+                            @if($ticket->status)
+                                <span class="badge bg-{{ $ticket->status->getColor() }}">
+                                    {{ $ticket->status->getLabel() }}
                                 </span>
                             @else
                                 <span class="badge bg-secondary">N/A</span>

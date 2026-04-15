@@ -34,11 +34,23 @@ Route::get('/services', [HomeController::class, 'service'])
     ->middleware(['auth'])
     ->name('services.index');
 
+Route::get('/tickets', [TicketController::class, 'index'])
+
+    ->middleware(['auth'])
+
+    ->name('tickets.index');
+
 Route::get('/tickets/create', [TicketController::class, 'create'])
 
     ->middleware(['auth'])
 
     ->name('ticket.create');
+
+Route::get('/tickets/{id}', [TicketController::class, 'show'])
+
+    ->middleware(['auth'])
+
+    ->name('tickets.show');
 Route::get('/services/{id}', [HomeController::class, 'serviceDetail'])->name('services.show');
 
 

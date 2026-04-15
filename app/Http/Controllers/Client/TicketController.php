@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Client;
 use App\Models\Ticket;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Http\Requests\StoreTicketRequest;
+
+use function Symfony\Component\String\u;
+
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +22,7 @@ class TicketController extends Controller
 
     public function index()
     {
-        $tickets = Ticket::with(['creator', 'assignee'])
+        $tickets = Ticket::with(['user', 'assignee'])
             ->orderBy('created_at', 'desc')
             ->paginate(10); // Phân trang 10 mục mỗi trang cho giao diện gọn
 
@@ -28,39 +33,33 @@ class TicketController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('client.tickets.create', compact('users'));
+        // Không cần lấy danh sách User nữa vì khách không được chọn
+        return view('client.tickets.create');
     }
-    /** 
-     * Store a newly created resource in storage.
-     */
-public function store(Request $request)
-{
-    // Validate dữ liệu
-    $request->validate([
-        'title'   => 'required|max:255',
-        'content' => 'required',
-    ]);
 
-    Ticket::create([
-        'title'     => $request->title,
-        'content'   => $request->input('content'),
-        'priority'  => $request->priority ?? 1,
-        'status'    => $request->status ?? 1,
-        'assign_id' => $request->assign_id ?: null, // Tránh gửi chuỗi rỗng
-        'user_id'   => auth()->id(),
-        // LẤY TÊN USER ĐĂNG NHẬP ĐỂ ĐIỀN VÀO CỘT NAME
-        'name'      => auth()->user()->name, 
-    ]);
+    public function store(StoreTicketRequest $request)
+    {
+        // Khi code chạy đến đây, dữ liệu chắc chắn đã hợp lệ
+        $validated = $request->validated();
 
-    return redirect()->route('dashboard')->with('success', 'Yêu cầu của bạn đã được gửi thành công!');
-}     
-    /**
-     * Display the specified resource.
-     */
+        Ticket::create([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'priority' => $validated['priority'],
+
+            // Các giá trị mặc định hệ thống tự áp đặt
+            'status' => 1,    // Chờ xử lý
+            'assign_id' => null, // Chưa giao cho ai
+            'user_id' => auth()->id(),
+            'name' => auth()->user()->name,
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Gửi phiếu hỗ trợ thành công!');
+    }
     public function show(string $id)
     {
-        return view('client.tickets.show');
+        $ticket = Ticket::with(['user', 'assignee'])->findOrFail($id);
+        return view('client.tickets.show', compact('ticket'));
     }
 
     /**

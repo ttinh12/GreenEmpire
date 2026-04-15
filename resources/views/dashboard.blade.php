@@ -9,6 +9,7 @@
                         <th>Tiêu đề</th>
                         <th>Người tạo</th>
                         <th>Trạng thái</th>
+                        <th class="text-center">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
@@ -17,7 +18,18 @@
                         <td>{{ $ticket->id }}</td>
                         <td>{{ $ticket->title }}</td>
                         <td>{{ $ticket->user->name }}</td>
-                        <td><span class="badge bg-label-primary me-1">Hoạt động</span></td>
+                        <td>
+                            @if($ticket->status)
+                                <span class="badge bg-{{ $ticket->status->getColor() }}">{{ $ticket->status->getLabel() }}</span>
+                            @else
+                                <span class="badge bg-secondary">N/A</span>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ route('tickets.show', $ticket->id) }}" class="btn btn-sm btn-info text-white">
+                                <i class="fas fa-search"></i> Xem chi tiết
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>

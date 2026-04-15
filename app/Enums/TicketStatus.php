@@ -19,7 +19,7 @@ enum TicketStatus: string implements HasLabel, HasIcon, HasColor
     {
         return match ($this) {
             self::ACTIVE => 'Chờ xử lý',
-            self::INACTIVE => 'Đã được giao cho nhân viên',
+            self::INACTIVE => 'Đang xử lý',
             self::BANNED => 'Đã hoàn thành',
         };
     }
