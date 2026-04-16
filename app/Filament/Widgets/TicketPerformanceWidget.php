@@ -13,6 +13,7 @@ class TicketPerformanceWidget extends ChartWidget
     protected ?string $heading = 'Hiệu suất xử lý vé';
 
     protected static ?int $sort = 2;
+    protected int|string|array $columnSpan = 'full';
 
     protected function getData(): array
     {
@@ -61,17 +62,24 @@ class TicketPerformanceWidget extends ChartWidget
     protected function getOptions(): array
     {
         return [
+            'indexAxis' => 'y', // Xoay ngang biểu đồ
             'plugins' => [
                 'legend' => [
                     'display' => true,
                 ],
             ],
             'scales' => [
-                'y' => [
+                // ĐỔI TỪ 'y' SANG 'x' VÌ BIỂU ĐỒ ĐANG XOAY NGANG
+                'x' => [
                     'beginAtZero' => true,
                     'ticks' => [
+                        'precision' => 0,
                         'stepSize' => 1,
                     ],
+                ],
+                // Trục y bây giờ chứa tên nhân viên, không cần ép số nguyên
+                'y' => [
+                    'beginAtZero' => true,
                 ],
             ],
         ];
