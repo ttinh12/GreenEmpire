@@ -22,7 +22,7 @@ class CustomerNote extends Model
     ];
 
     protected $casts = [
-        'note_date' => 'datetime',
+        'note_date' => 'datetime', 
     ];
 
     public function customer()
