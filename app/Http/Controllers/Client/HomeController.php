@@ -62,6 +62,11 @@ class HomeController extends Controller
         $user = $request->user();
         return view('client.profile.edit', compact('user'));
     }
+    public function show(Request $request)
+    {
+        $user = $request->user();
+        return view('client.profile.show', compact('user'));
+    }
     public function updatePassword(Request $request)
     {
         $validated = $request->validate([

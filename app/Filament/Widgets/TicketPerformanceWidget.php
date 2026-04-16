@@ -48,12 +48,6 @@ class TicketPerformanceWidget extends ChartWidget
                     'backgroundColor' => 'rgba(34, 197, 94, 0.8)', // green
                     'borderColor' => 'rgba(34, 197, 94, 1)',
                 ],
-                [
-                    'label' => 'Đang xử lý',
-                    'data' => $assignedData,
-                    'backgroundColor' => 'rgba(251, 191, 36, 0.8)', // yellow
-                    'borderColor' => 'rgba(251, 191, 36, 1)',
-                ],
             ],
             'labels' => $labels,
         ];

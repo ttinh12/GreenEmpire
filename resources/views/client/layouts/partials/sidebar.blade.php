@@ -46,7 +46,7 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="{{ route('profile.show') }}" class="menu-link">
                         <div>Thông tin cá nhân</div>
                     </a>
                 </li>

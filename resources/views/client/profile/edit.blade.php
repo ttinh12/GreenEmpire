@@ -21,7 +21,7 @@
             <span class="text-muted">Cài đặt /</span> Tài khoản
         </h4>
 
-        {{-- BẮT ĐẦU FORM CẬP NHẬT HỒ SƠ (BAO QUANH CẢ 2 CỘT) --}}
+        {{-- DÙNG 1 FORM DUY NHẤT CHO CẢ AVATAR VÀ TÊN --}}
         <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" id="formAccountSettings">
             @csrf
             @method('PATCH')
@@ -37,21 +37,15 @@
 
                             <div>
                                 <label for="upload" class="btn btn-primary btn-sm mb-2">
-                                    <span>Tải ảnh mới</span>
+                                    <span>Chọn ảnh mới</span>
                                     <input type="file" id="upload" name="avatar" hidden accept="image/png, image/jpeg">
                                 </label>
                                 <p class="text-muted small">JPG hoặc PNG tối đa 2MB</p>
                             </div>
 
-                            @error('avatar')
-                                <div class="text-danger small">{{ $message }}</div>
-                            @enderror
-
                             <hr>
-
                             <h6 class="mb-1">{{ auth()->user()->name }}</h6>
                             <small class="text-muted d-block mb-2">{{ auth()->user()->email }}</small>
-
                             <span class="badge bg-label-primary">
                                 {{ auth()->user()->getRoleNames()->first() ?? ucfirst(auth()->user()->role) }}
                             </span>
@@ -59,19 +53,17 @@
                     </div>
                 </div>
 
-                {{-- CỘT PHẢI: THÔNG TIN CHI TIẾT --}}
+                {{-- CỘT PHẢI: THÔNG TIN VÀ MẬT KHẨU --}}
                 <div class="col-lg-8">
+                    {{-- CARD 1: THÔNG TIN CÁ NHÂN --}}
                     <div class="card mb-4">
-                        <h5 class="card-header">Thông tin cá nhân</h5>
-                        <div class="card-body">
+                        <h5 class="card-header border-bottom">Thông tin cá nhân</h5>
+                        <div class="card-body pt-4">
                             <div class="row">
                                 <div class="mb-3 col-md-6">
                                     <label for="name" class="form-label">Họ và tên</label>
-                                    <input class="form-control @error('name') is-invalid @enderror" type="text" id="name"
-                                        name="name" value="{{ old('name', auth()->user()->name) }}">
-                                    @error('name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <input class="form-control" type="text" id="name" name="name"
+                                        value="{{ old('name', auth()->user()->name) }}">
                                 </div>
 
                                 <div class="mb-3 col-md-6">
@@ -90,57 +82,40 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </form>
-        <div class="row">
-            <div class="col-lg-4 d-none d-lg-block"></div>
-            <div class="col-lg-8">
-                <div class="card">
-                    <h5 class="card-header">Đổi mật khẩu</h5>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('profile.password.update') }}">
-                            @csrf
-                            @method('PUT')
+        </form> {{-- ĐÓNG FORM CHÍNH Ở ĐÂY --}}
 
-                            <div class="row">
-                                <div class="mb-3 col-md-4">
-                                    <label class="form-label">Mật khẩu hiện tại</label>
-                                    <input class="form-control @error('current_password') is-invalid @enderror"
-                                        type="password" name="current_password" placeholder="****">
-                                    @error('current_password')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3 col-md-4">
-                                    <label class="form-label">Mật khẩu mới</label>
-                                    <input class="form-control @error('password') is-invalid @enderror" type="password"
-                                        name="password" placeholder="****">
-                                    @error('password')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3 col-md-4">
-                                    <label class="form-label">Xác nhận mật khẩu</label>
-                                    <input class="form-control" type="password" name="password_confirmation"
-                                        placeholder="****">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-warning">Cập nhật mật khẩu</button>
-                        </form>
+        {{-- CARD 2: ĐỔI MẬT KHẨU (FORM RIÊNG BIỆT) --}}
+        <div class="card">
+            <h5 class="card-header border-bottom">Đổi mật khẩu</h5>
+            <div class="card-body pt-4">
+                <form method="POST" action="{{ route('profile.password.update') }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label">Mật khẩu hiện tại</label>
+                            <input class="form-control" type="password" name="current_password" placeholder="****">
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label">Mật khẩu mới</label>
+                            <input class="form-control" type="password" name="password" placeholder="****">
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label">Xác nhận mật khẩu</label>
+                            <input class="form-control" type="password" name="password_confirmation" placeholder="****">
+                        </div>
                     </div>
-                </div>
+                    <button type="submit" class="btn btn-warning">Cập nhật mật khẩu</button>
+                </form>
             </div>
         </div>
     </div>
+    </div>
+    </div>
 
-    {{-- SCRIPT TỔNG HỢP --}}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // 1. Preview ảnh ngay khi chọn file
+            // 1. CHỈ PREVIEW ẢNH (KHÔNG SUBMIT)
             const uploadInput = document.getElementById('upload');
             const avatarImg = document.getElementById('uploadedAvatar');
 
@@ -148,27 +123,26 @@
                 uploadInput.onchange = () => {
                     const [file] = uploadInput.files;
                     if (file) {
+                        // Hiện ảnh lên cho người dùng xem trước ngay lập tức
                         avatarImg.src = URL.createObjectURL(file);
                     }
                 };
             }
 
-            // 2. Tự động đóng Toast thông báo sau 3 giây
-            const toastElement = document.querySelector('.bs-toast');
-            if (toastElement) {
-                setTimeout(() => {
-                    toastElement.classList.remove('show');
-                }, 3000);
-            }
-
-            // 3. Hiệu ứng loading cho nút Submit Profile
+            // 2. Hiệu ứng loading khi nhấn nút "Lưu thay đổi"
             const profileForm = document.getElementById('formAccountSettings');
             if (profileForm) {
                 profileForm.onsubmit = function () {
-                    document.getElementById('btnText').innerText = 'Đang xử lý...';
+                    document.getElementById('btnText').innerText = 'Đang lưu...';
                     document.getElementById('btnLoading').classList.remove('d-none');
                     document.getElementById('btnSubmit').classList.add('disabled');
                 };
+            }
+
+            // 3. Tự đóng Toast
+            const toastElement = document.querySelector('.bs-toast');
+            if (toastElement) {
+                setTimeout(() => { toastElement.classList.remove('show'); }, 3000);
             }
         });
     </script>

@@ -64,9 +64,10 @@ Route::post('/tickets/store', [TicketController::class, 'store'])
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/profile', [HomeController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit', [HomeController::class, 'edit'])->name('profile.edit');
 
     Route::patch('/profile', [HomeController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [HomeController::class, 'show'])->name('profile.show');
 
     // Route::delete('/profile', [HomeController::class, 'destroy'])->name('profile.destroy');
 
