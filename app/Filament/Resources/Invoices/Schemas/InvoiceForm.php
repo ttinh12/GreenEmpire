@@ -7,6 +7,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use App\Enums\InvoiceStatus;
+use App\Enums\PaymentMethod;
 
 class InvoiceForm
 {
@@ -77,23 +79,20 @@ class InvoiceForm
                 Select::make('status')
                     ->label('Trạng thái')
                     ->options([
-                        'draft' => 'Nháp',
-                        'sent' => 'Đã gửi',
-                        'paid' => 'Đã thanh toán',
-                        'partial' => 'Thanh toán một phần',
-                        'overdue' => 'Quá hạn',
-                        'cancelled' => 'Đã hủy',
+                        1 => 'Đã thanh toán',
+                        2 => 'Chờ thanh toán',
+                        3 => 'Chưa thanh toán',
                     ])
-                    ->default('draft')
+                    ->default(2)
                     ->required(),
+
 
                 Select::make('payment_method')
                     ->label('Phương thức thanh toán')
                     ->options([
-                        'bank_transfer' => 'Chuyển khoản ngân hàng',
-                        'cash' => 'Tiền mặt',
-                        'check' => 'Séc',
-                        'other' => 'Khác',
+                        1 => 'Tiền mặt',
+                        2 => 'Chuyển khoản',
+                        3 => 'Chuyển khoản ngân hàng',
                     ]),
 
                 Textarea::make('bank_info')

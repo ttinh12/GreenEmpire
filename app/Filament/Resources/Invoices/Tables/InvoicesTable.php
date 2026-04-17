@@ -85,14 +85,16 @@ class InvoicesTable
                 TextColumn::make('status')
                     ->label('Trạng thái')
                     ->badge()
-                    ->formatStateUsing(fn(InvoiceStatus $state) => $state->label())
-                    ->color(fn(InvoiceStatus $state) => $state->color()),
+                    ->formatStateUsing(fn($state) => $state?->getLabel())
+                    ->color(fn($state) => $state?->getColor()),
 
 
                 TextColumn::make('payment_method')
                     ->label('Phương thức thanh toán')
                     ->badge()
-                    ->formatStateUsing(fn(PaymentMethod $state) => $state->label()),
+                    ->formatStateUsing(fn($state) => $state?->label()),
+
+
 
 
                 TextColumn::make('creator.name')
