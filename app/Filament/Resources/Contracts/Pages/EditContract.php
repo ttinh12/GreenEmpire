@@ -15,7 +15,8 @@ class EditContract extends EditRecord
     {
         return [
             ViewAction::make(),
-            DeleteAction::make(),
+            DeleteAction::make()
+                ->label('Xóa hợp đồng')
         ];
     }
 }

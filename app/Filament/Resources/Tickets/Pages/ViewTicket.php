@@ -20,7 +20,8 @@ class ViewTicket extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            EditAction::make(),
+            EditAction::make()
+                ->label('Chỉnh sửa vé'),
         ];
     }
 }

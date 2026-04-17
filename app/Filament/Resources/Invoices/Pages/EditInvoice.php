@@ -14,8 +14,10 @@ class EditInvoice extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            ViewAction::make(),
-            DeleteAction::make(),
+            ViewAction::make()
+                ->label('Xem hóa đơn'),
+            DeleteAction::make()
+                ->label('Xóa hóa đơn')
         ];
     }
 }
