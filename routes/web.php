@@ -10,7 +10,10 @@ use App\Http\Controllers\Client\TicketController;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
+use App\Models\Invoice;
+use App\Mail\InvoiceMail;
 
+use Illuminate\Support\Facades\Mail;
 
 
 Route::get('/', function () {
@@ -80,6 +83,26 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return "Trang thống kê nội bộ của Admin";
     });
     // Thêm các route admin khác ở đây...
+});
+
+
+
+Route::get('/test-mail', function () {
+    Mail::raw('Test mail từ CRM', function ($message) {
+        $message->to('test@test.com')
+                ->subject('Test Mail');
+    });
+
+    return 'Mail sádasdaent';
+});
+
+Route::get('/test-invoice-mail', function () {
+
+    $invoice = Invoice::latest()->first();
+
+    Mail::to('test@test.com')->send(new InvoiceMail($invoice));
+
+    return "Invoice Mail Sent";
 });
 
 
