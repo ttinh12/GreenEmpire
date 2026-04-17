@@ -12,6 +12,7 @@ use App\Filament\Resources\Invoices\Schemas\InvoiceInfolist;
 use App\Filament\Resources\Invoices\Tables\InvoicesTable;
 use App\Models\Invoice;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -22,8 +23,24 @@ class InvoiceResource extends Resource
     protected static ?string $model = Invoice::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|UnitEnum|null $navigationGroup = 'Kinh doanh & Dịch vụ';
 
     protected static ?string $recordTitleAttribute = 'code';
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Hóa đơn';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Hóa đơn';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Hóa đơn';
+    }
 
     public static function form(Schema $schema): Schema
     {

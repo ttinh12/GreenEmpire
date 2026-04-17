@@ -11,6 +11,7 @@ use App\Filament\Resources\Tickets\Schemas\TicketInfolist;
 use App\Filament\Resources\Tickets\Tables\TicketsTable;
 use App\Models\Ticket;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -21,8 +22,24 @@ class TicketResource extends Resource
     protected static ?string $model = Ticket::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|UnitEnum|null $navigationGroup = 'Chăm sóc & Hỗ trợ';
 
     protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Vé hỗ trợ kỹ thuật';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Vé hỗ trợ kỹ thuật';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Vé hỗ trợ kỹ thuật';
+    }
 
     public static function form(Schema $schema): Schema
     {

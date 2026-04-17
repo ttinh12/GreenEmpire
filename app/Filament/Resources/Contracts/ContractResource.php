@@ -11,6 +11,7 @@ use App\Filament\Resources\Contracts\Schemas\ContractInfolist;
 use App\Filament\Resources\Contracts\Tables\ContractsTable;
 use App\Models\Contract;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -21,8 +22,24 @@ class ContractResource extends Resource
     protected static ?string $model = Contract::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|UnitEnum|null $navigationGroup = 'Kinh doanh & Dịch vụ';
 
     protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Hợp đồng';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Hợp đồng';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Hợp đồng';
+    }
 
     public static function form(Schema $schema): Schema
     {

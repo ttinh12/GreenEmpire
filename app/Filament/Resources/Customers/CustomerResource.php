@@ -11,6 +11,7 @@ use App\Filament\Resources\Customers\RelationManagers\InvoicesRelationManager;
 use App\Filament\Resources\Customers\RelationManagers\TasksRelationManager;
 use App\Models\Customer;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -21,8 +22,24 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|UnitEnum|null $navigationGroup = 'Chăm sóc & Hỗ trợ';
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Danh sách khách hàng';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Danh sách khách hàng';
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Nông dân';
+    }
 
     public static function form(Schema $schema): Schema
     {
