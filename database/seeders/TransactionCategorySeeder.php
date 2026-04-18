@@ -7,19 +7,30 @@ use Illuminate\Database\Seeder;
 
 class TransactionCategorySeeder extends Seeder
 {
-public function run(): void
-{
-    $categories = [
-        // Thu nhập (Dùng số 1 đại diện cho 'income')
-        ['code' => 'INC_SALE', 'name' => 'Doanh thu bán hàng', 'type' => 1],
-        ['code' => 'INC_SERV', 'name' => 'Thu phí dịch vụ', 'type' => 1],
-        
-        // Chi phí (Dùng số 2 đại diện cho 'expense')
-        ['code' => 'EXP_SALA', 'name' => 'Chi trả lương nhân viên', 'type' => 2],
-        ['code' => 'EXP_OFFI', 'name' => 'Chi phí văn phòng', 'type' => 2],
-    ];
+    public function run(): void
+    {
+        $categories = [
+            // ── Thu nhập (type = 1) ───────────────────────────
+            ['code' => 'INC_WEB',   'name' => 'Doanh thu thiết kế & lập trình web',   'type' => 1, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'INC_APP',   'name' => 'Doanh thu lập trình ứng dụng',          'type' => 1, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'INC_SEO',   'name' => 'Doanh thu SEO & quảng cáo',             'type' => 1, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'INC_AI',    'name' => 'Doanh thu đào tạo AI & N8N',            'type' => 1, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'INC_MAINT', 'name' => 'Doanh thu bảo trì hệ thống',           'type' => 1, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'INC_OTHER', 'name' => 'Thu nhập khác',                         'type' => 1, 'parent_id' => null, 'is_active' => 1],
 
-    foreach ($categories as $cat) {
-        TransactionCategory::create($cat);
+            // ── Chi phí (type = 2) ───────────────────────────
+            ['code' => 'EXP_SALA',  'name' => 'Chi trả thù lao thành viên',            'type' => 2, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'EXP_HOST',  'name' => 'Chi phí hosting & tên miền',            'type' => 2, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'EXP_ADS',   'name' => 'Chi phí chạy quảng cáo (ngân sách KH)','type' => 2, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'EXP_TOOL',  'name' => 'Chi phí công cụ & phần mềm',           'type' => 2, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'EXP_TRAIN', 'name' => 'Chi phí đào tạo nội bộ',               'type' => 2, 'parent_id' => null, 'is_active' => 1],
+            ['code' => 'EXP_OTHER', 'name' => 'Chi phí khác',                          'type' => 2, 'parent_id' => null, 'is_active' => 1],
+        ];
+
+        foreach ($categories as $data) {
+            TransactionCategory::create($data);
+        }
+
+        $this->command->info('✅ TransactionCategorySeeder: Đã tạo ' . count($categories) . ' danh mục tài chính.');
     }
-}}
+}

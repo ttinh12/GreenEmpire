@@ -23,12 +23,12 @@ class ServiceResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return 'Dịch vụ nông nghiệp';
+        return 'Dịch vụ';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'Dịch vụ nông nghiệp';
+        return 'Dịch vụ';
     }
 
     public static function getModelLabel(): string
