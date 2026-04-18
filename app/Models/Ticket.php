@@ -69,4 +69,12 @@ class Ticket extends Model
             }
         });
     }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($ticket) {
+            $ticket->ticket_code = 'TK' . time();
+        });
+    }
 }

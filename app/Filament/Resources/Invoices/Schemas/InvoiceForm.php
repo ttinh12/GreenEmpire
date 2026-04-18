@@ -6,106 +6,129 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use App\Enums\InvoiceStatus;
-use App\Enums\PaymentMethod;
 
 class InvoiceForm
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                TextInput::make('code')
-                    ->label('Mã hóa đơn')
-                    ->required(),
+        return $schema->components([
 
-                TextInput::make('contract_id')
-                    ->label('Mã hợp đồng')
-                    ->required()
-                    ->numeric(),
+            // ── SECTION 1: Thông tin hóa đơn ─────────────────────
+            Section::make('Thông tin hóa đơn')
+                ->icon('heroicon-o-document-text')
+                ->columns(2)
+                ->schema([
 
-                TextInput::make('customer_id')
-                    ->label('Khách hàng')
-                    ->required()
-                    ->numeric(),
+                    TextInput::make('code')
+                        ->label('Mã hóa đơn')
+                        ->required(),
 
-                TextInput::make('department_id')
-                    ->label('Phòng ban')
-                    ->numeric(),
+                    Select::make('contract_id')
+                        ->label('Hợp đồng')
+                        ->relationship('contract', 'code')
+                        ->searchable()
+                        ->required(),
 
-                DatePicker::make('issue_date')
-                    ->label('Ngày lập hóa đơn')
-                    ->required(),
+                    Select::make('customer_id')
+                        ->label('Khách hàng')
+                        ->relationship('customer', 'name')
+                        ->searchable()
+                        ->required(),
 
-                DatePicker::make('due_date')
-                    ->label('Hạn thanh toán')
-                    ->required(),
+                    Select::make('department_id')
+                        ->label('Phòng ban')
+                        ->relationship('department', 'name')
+                        ->searchable(),
 
-                TextInput::make('subtotal')
-                    ->label('Tạm tính')
-                    ->required()
-                    ->numeric()
-                    ->default(0.0),
+                    DatePicker::make('issue_date')
+                        ->label('Ngày lập')
+                        ->required(),
 
-                TextInput::make('vat_rate')
-                    ->label('Thuế VAT (%)')
-                    ->required()
-                    ->numeric()
-                    ->default(10.0),
+                    DatePicker::make('due_date')
+                        ->label('Hạn thanh toán')
+                        ->required(),
+                ]),
 
-                TextInput::make('vat_amount')
-                    ->label('Tiền thuế VAT')
-                    ->required()
-                    ->numeric()
-                    ->default(0.0),
+            // ── SECTION 2: Thanh toán ────────────────────────────
+            Section::make('Thông tin thanh toán')
+                ->icon('heroicon-o-currency-dollar')
+                ->columns(2)
+                ->schema([
 
-                TextInput::make('total_amount')
-                    ->label('Tổng tiền')
-                    ->required()
-                    ->numeric()
-                    ->default(0.0),
+                    TextInput::make('subtotal')
+                        ->label('Tạm tính')
+                        ->numeric()
+                        ->prefix('₫')
+                        ->default(0),
 
-                TextInput::make('paid_amount')
-                    ->label('Đã thanh toán')
-                    ->required()
-                    ->numeric()
-                    ->default(0.0),
+                    TextInput::make('vat_rate')
+                        ->label('VAT (%)')
+                        ->numeric()
+                        ->default(10),
 
-                TextInput::make('remaining')
-                    ->label('Còn lại')
-                    ->numeric(),
+                    TextInput::make('vat_amount')
+                        ->label('Tiền VAT')
+                        ->numeric()
+                        ->prefix('₫')
+                        ->default(0),
 
-                Select::make('status')
-                    ->label('Trạng thái')
-                    ->options([
-                        1 => 'Đã thanh toán',
-                        2 => 'Chờ thanh toán',
-                        3 => 'Chưa thanh toán',
-                    ])
-                    ->default(2)
-                    ->required(),
+                    TextInput::make('total_amount')
+                        ->label('Tổng tiền')
+                        ->numeric()
+                        ->prefix('₫')
+                        ->default(0),
 
+                    TextInput::make('paid_amount')
+                        ->label('Đã thanh toán')
+                        ->numeric()
+                        ->prefix('₫')
+                        ->default(0),
 
-                Select::make('payment_method')
-                    ->label('Phương thức thanh toán')
-                    ->options([
-                        1 => 'Tiền mặt',
-                        2 => 'Chuyển khoản',
-                        3 => 'Chuyển khoản ngân hàng',
-                    ]),
+                    TextInput::make('remaining')
+                        ->label('Còn lại')
+                        ->numeric()
+                        ->prefix('₫'),
+                ]),
 
-                Textarea::make('bank_info')
-                    ->label('Thông tin ngân hàng')
-                    ->columnSpanFull(),
+            // ── SECTION 3: Trạng thái ───────────────────────────
+            Section::make('Trạng thái & Thanh toán')
+                ->icon('heroicon-o-check-circle')
+                ->columns(2)
+                ->schema([
 
-                Textarea::make('notes')
-                    ->label('Ghi chú')
-                    ->columnSpanFull(),
+                    Select::make('status')
+                        ->label('Trạng thái')
+                        ->options([
+                            1 => 'Đã thanh toán',
+                            2 => 'Chờ thanh toán',
+                            3 => 'Chưa thanh toán',
+                        ])
+                        ->required(),
 
-                TextInput::make('created_by')
-                    ->label('Người tạo')
-                    ->numeric(),
-            ]);
+                    Select::make('payment_method')
+                        ->label('Phương thức')
+                        ->options([
+                            1 => 'Tiền mặt',
+                            2 => 'Chuyển khoản',
+                            3 => 'Ngân hàng',
+                        ]),
+                ]),
+
+            // ── SECTION 4: Ghi chú ──────────────────────────────
+            Section::make('Thông tin bổ sung')
+                ->icon('heroicon-o-pencil-square')
+                ->schema([
+
+                    Textarea::make('bank_info')
+                        ->label('Thông tin ngân hàng')
+                        ->columnSpanFull(),
+
+                    Textarea::make('notes')
+                        ->label('Ghi chú')
+                        ->columnSpanFull(),
+                ]),
+        ]);
     }
 }

@@ -3,102 +3,126 @@
 namespace App\Filament\Resources\Invoices\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class InvoiceInfolist
 {
     public static function configure(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                TextEntry::make('code')
-                    ->label('Mã hóa đơn'),
+        return $schema->components([
 
-                TextEntry::make('contract_id')
-                    ->label('Mã hợp đồng'),
+            // ── SECTION 1: Thông tin chính ─────────────────────
+            Section::make('Thông tin hóa đơn')
+                ->icon('heroicon-o-document-text')
+                ->columns(2)
+                ->schema([
 
-                TextEntry::make('customer_id')
-                    ->label('Khách hàng'),
+                    TextEntry::make('code')
+                        ->label('Mã hóa đơn')
+                        ->size('xl')
+                        ->weight('bold')
+                        ->color('primary')
+                        ->columnSpanFull(),
 
-                TextEntry::make('department_id')
-                    ->label('Phòng ban')
-                    ->placeholder('-'),
+                    TextEntry::make('customer.name')
+                        ->label('Khách hàng')
+                        ->icon('heroicon-o-user'),
 
-                TextEntry::make('issue_date')
-                    ->label('Ngày lập')
-                    ->date(),
+                    TextEntry::make('contract.code')
+                        ->label('Hợp đồng'),
 
-                TextEntry::make('due_date')
-                    ->label('Hạn thanh toán')
-                    ->date(),
+                    TextEntry::make('department.name')
+                        ->label('Phòng ban')
+                        ->default('-'),
 
-                TextEntry::make('subtotal')
-                    ->label('Tạm tính'),
+                    TextEntry::make('issue_date')
+                        ->label('Ngày lập')
+                        ->date(),
 
-                TextEntry::make('vat_rate')
-                    ->label('Thuế VAT (%)'),
+                    TextEntry::make('due_date')
+                        ->label('Hạn thanh toán')
+                        ->date(),
+                ]),
 
-                TextEntry::make('vat_amount')
-                    ->label('Tiền thuế VAT'),
+            // ── SECTION 2: Thanh toán ──────────────────────────
+            Section::make('Thanh toán')
+                ->icon('heroicon-o-currency-dollar')
+                ->columns(2)
+                ->schema([
 
-                TextEntry::make('total_amount')
-                    ->label('Tổng tiền'),
+                    TextEntry::make('subtotal')
+                        ->label('Tạm tính')
+                        ->money('VND'),
 
-                TextEntry::make('paid_amount')
-                    ->label('Đã thanh toán'),
+                    TextEntry::make('vat_amount')
+                        ->label('VAT')
+                        ->money('VND'),
 
-                TextEntry::make('remaining')
-                    ->label('Còn lại')
-                    ->placeholder('-'),
+                    TextEntry::make('total_amount')
+                        ->label('Tổng tiền')
+                        ->money('VND')
+                        ->color('success')
+                        ->weight('bold'),
 
-                TextEntry::make('status')
-                    ->label('Trạng thái')
-                    ->badge()
-                    ->formatStateUsing(fn ($state) => match ($state) {
-                        'draft' => 'Nháp',
-                        'sent' => 'Đã gửi',
-                        'paid' => 'Đã thanh toán',
-                        'partial' => 'Thanh toán một phần',
-                        'overdue' => 'Quá hạn',
-                        'cancelled' => 'Đã hủy',
-                        default => $state,
-                    }),
+                    TextEntry::make('paid_amount')
+                        ->label('Đã thanh toán')
+                        ->money('VND'),
 
-                TextEntry::make('payment_method')
-                    ->label('Phương thức thanh toán')
-                    ->badge()
-                    ->formatStateUsing(fn ($state) => match ($state) {
-                        'bank_transfer' => 'Chuyển khoản',
-                        'cash' => 'Tiền mặt',
-                        'check' => 'Séc',
-                        'other' => 'Khác',
-                        default => $state,
-                    })
-                    ->placeholder('-'),
+                    TextEntry::make('remaining')
+                        ->label('Còn lại')
+                        ->money('VND')
+                        ->color(fn($state) => $state > 0 ? 'danger' : 'success'),
+                ]),
 
-                TextEntry::make('bank_info')
-                    ->label('Thông tin ngân hàng')
-                    ->placeholder('-')
-                    ->columnSpanFull(),
+            // ── SECTION 3: Trạng thái ─────────────────────────
+            Section::make('Trạng thái')
+                ->icon('heroicon-o-check-circle')
+                ->schema([
 
-                TextEntry::make('notes')
-                    ->label('Ghi chú')
-                    ->placeholder('-')
-                    ->columnSpanFull(),
+                    TextEntry::make('status')
+                        ->label('Trạng thái')
+                        ->badge()
+                        ->color(fn($state) => match ($state) {
+                            1 => 'success',
+                            2 => 'warning',
+                            3 => 'danger',
+                            default => 'gray',
+                        })
+                        ->formatStateUsing(fn($state) => match ($state) {
+                            1 => 'Đã thanh toán',
+                            2 => 'Chờ thanh toán',
+                            3 => 'Chưa thanh toán',
+                            default => $state,
+                        }),
 
-                TextEntry::make('created_by')
-                    ->label('Người tạo')
-                    ->placeholder('-'),
+                    TextEntry::make('payment_method')
+                        ->label('Phương thức')
+                        ->badge()
+                        ->formatStateUsing(fn($state) => match ($state) {
+                            1 => 'Tiền mặt',
+                            2 => 'Chuyển khoản',
+                            3 => 'Ngân hàng',
+                            default => '-',
+                        }),
+                ]),
 
-                TextEntry::make('created_at')
-                    ->label('Ngày tạo')
-                    ->dateTime()
-                    ->placeholder('-'),
+            // ── SECTION 4: Ghi chú ─────────────────────────────
+            Section::make('Ghi chú')
+                ->icon('heroicon-o-document')
+                ->collapsible()
+                ->schema([
 
-                TextEntry::make('updated_at')
-                    ->label('Cập nhật lần cuối')
-                    ->dateTime()
-                    ->placeholder('-'),
-            ]);
+                    TextEntry::make('bank_info')
+                        ->label('Thông tin ngân hàng')
+                        ->default('-')
+                        ->columnSpanFull(),
+
+                    TextEntry::make('notes')
+                        ->label('Ghi chú')
+                        ->default('-')
+                        ->columnSpanFull(),
+                ]),
+        ]);
     }
 }
