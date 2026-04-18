@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->brandName('GreenEmpire')
+            ->brandName('FPT Polytechnic')
             ->path('admin')
             ->login()
             ->colors([
@@ -61,6 +61,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+            ])
+            ->navigationGroups([
+                'Chăm sóc & Hỗ trợ',
+                'Cấu hình hệ thống',
+                'Tài chính',
             ]);
     }
 }
