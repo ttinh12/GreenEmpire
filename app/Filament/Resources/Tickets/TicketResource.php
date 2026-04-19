@@ -21,7 +21,7 @@ class TicketResource extends Resource
 {
     protected static ?string $model = Ticket::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTicket;
     protected static string|UnitEnum|null $navigationGroup = 'Chăm sóc & Hỗ trợ';
 
     protected static ?string $recordTitleAttribute = 'title';

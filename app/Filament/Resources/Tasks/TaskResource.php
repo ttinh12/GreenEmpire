@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class TaskResource extends Resource
 {
     protected static ?string $model = Task::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCheckCircle;
     protected static string|UnitEnum|null $navigationGroup = 'Chăm sóc & Hỗ trợ';
     protected static ?string $recordTitleAttribute = 'title';
     protected static ?string $navigationLabel = 'Công việc';
@@ -55,9 +55,9 @@ class TaskResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => ListTasks::route('/'),
+            'index' => ListTasks::route('/'),
             'create' => CreateTask::route('/create'),
-            'edit'   => EditTask::route('/{record}/edit'),
+            'edit' => EditTask::route('/{record}/edit'),
             'kanban' => TaskKanban::route('/kanban'),
         ];
     }
