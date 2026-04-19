@@ -7,6 +7,7 @@ use App\Filament\Resources\Invoices\Pages\EditInvoice;
 use App\Filament\Resources\Invoices\Pages\ListInvoices;
 use App\Filament\Resources\Invoices\Pages\ViewInvoice;
 use App\Filament\Resources\Invoices\RelationManagers\InvoiceItemsRelationManager;
+use App\Filament\Resources\Invoices\RelationManagers\PaymentsRelationManager;
 use App\Filament\Resources\Invoices\Schemas\InvoiceForm;
 use App\Filament\Resources\Invoices\Schemas\InvoiceInfolist;
 use App\Filament\Resources\Invoices\Tables\InvoicesTable;
@@ -21,26 +22,13 @@ use Filament\Tables\Table;
 class InvoiceResource extends Resource
 {
     protected static ?string $model = Invoice::class;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     protected static string|UnitEnum|null $navigationGroup = 'Kinh doanh & Dịch vụ';
-
     protected static ?string $recordTitleAttribute = 'code';
 
-    public static function getNavigationLabel(): string
-    {
-        return 'Hóa đơn';
-    }
-
-    public static function getPluralModelLabel(): string
-    {
-        return 'Hóa đơn';
-    }
-
-    public static function getModelLabel(): string
-    {
-        return 'Hóa đơn';
-    }
+    public static function getNavigationLabel(): string { return 'Hóa đơn'; }
+    public static function getPluralModelLabel(): string { return 'Hóa đơn'; }
+    public static function getModelLabel(): string { return 'Hóa đơn'; }
 
     public static function form(Schema $schema): Schema
     {
@@ -61,16 +49,17 @@ class InvoiceResource extends Resource
     {
         return [
             InvoiceItemsRelationManager::class,
+            PaymentsRelationManager::class,  // ← thêm mới
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListInvoices::route('/'),
+            'index'  => ListInvoices::route('/'),
             'create' => CreateInvoice::route('/create'),
-            'view' => ViewInvoice::route('/{record}'),
-            'edit' => EditInvoice::route('/{record}/edit'),
+            'view'   => ViewInvoice::route('/{record}'),
+            'edit'   => EditInvoice::route('/{record}/edit'),
         ];
     }
 }

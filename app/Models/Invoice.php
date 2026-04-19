@@ -33,12 +33,6 @@ class Invoice extends Model
         'created_by'
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Casts
-    |--------------------------------------------------------------------------
-    */
-
     protected $casts = [
         'issue_date' => 'date',
         'due_date' => 'date',
@@ -50,71 +44,57 @@ class Invoice extends Model
         'payment_method' => PaymentMethod::class,
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relationships
-    |--------------------------------------------------------------------------
-    */
+    // ── Relationships ──────────────────────────────────────────────
 
-    // Contract
     public function contract(): BelongsTo
     {
         return $this->belongsTo(Contract::class);
     }
 
-    // Customer
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
-    // Department
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
     }
 
-    // Creator
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    // Invoice Items
     public function invoiceItems(): HasMany
     {
         return $this->hasMany(InvoiceItem::class, 'invoice_id');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Helper
-    |--------------------------------------------------------------------------
-    */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'invoice_id');
+    }
 
-    // Tiền còn lại
+    // ── Helpers ────────────────────────────────────────────────────
+
     public function getRemainingAttribute()
     {
         return ($this->total_amount ?? 0) - ($this->paid_amount ?? 0);
     }
 
-    // Format tổng tiền
     public function getFormattedTotalAttribute()
     {
         return number_format($this->total_amount ?? 0, 0, ',', '.') . ' VNĐ';
     }
 
-    // Format đã thanh toán
     public function getFormattedPaidAttribute()
     {
         return number_format($this->paid_amount ?? 0, 0, ',', '.') . ' VNĐ';
     }
 
-    // Format còn lại
     public function getFormattedRemainingAttribute()
     {
         return number_format($this->remaining ?? 0, 0, ',', '.') . ' VNĐ';
     }
-
-    
 }

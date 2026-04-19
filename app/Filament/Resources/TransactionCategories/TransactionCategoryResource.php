@@ -5,15 +5,16 @@ namespace App\Filament\Resources\TransactionCategories;
 use App\Filament\Resources\TransactionCategories\Pages\CreateTransactionCategory;
 use App\Filament\Resources\TransactionCategories\Pages\EditTransactionCategory;
 use App\Filament\Resources\TransactionCategories\Pages\ListTransactionCategories;
+use App\Filament\Resources\TransactionCategories\Pages\ViewTransactionCategory;
 use App\Filament\Resources\TransactionCategories\Schemas\TransactionCategoryForm;
 use App\Filament\Resources\TransactionCategories\Tables\TransactionCategoriesTable;
 use App\Models\TransactionCategory;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class TransactionCategoryResource extends Resource
 {
