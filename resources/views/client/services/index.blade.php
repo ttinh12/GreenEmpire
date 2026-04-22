@@ -28,12 +28,12 @@
                         <div style="height: 200px; overflow: hidden; border-radius: 8px 8px 0 0; background: #f1f0e8;">
                             @if($service->image_url)
                                 <img src="{{ Storage::url($service->image_url) }}" alt="{{ $service->name }}" class="w-100 h-100"
-                            style="object-fit: cover;"> 
+                                    style="object-fit: cover;">
                             @else
-                                    <div class="d-flex align-items-center justify-content-center h-100">
-                                        <i class="bx bx-code-alt" style="font-size: 56px; color: #c4b5fd;"></i>
-                                    </div>
-                                @endif
+                                <div class="d-flex align-items-center justify-content-center h-100">
+                                    <i class="bx bx-code-alt" style="font-size: 56px; color: #c4b5fd;"></i>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="card-body d-flex flex-column">

@@ -29,7 +29,7 @@ class ServiceForm
                         ->maxLength(200)
                         ->live(onBlur: true)
                         ->afterStateUpdated(
-                            fn ($set, $state) => $set('slug', Str::slug($state))
+                            fn($set, $state) => $set('slug', Str::slug($state))
                         )
                         ->columnSpanFull(),
 
@@ -46,10 +46,16 @@ class ServiceForm
                         ->label('Mô tả chi tiết')
                         ->placeholder('Mô tả đầy đủ về dịch vụ, phạm vi áp dụng, lưu ý...')
                         ->toolbarButtons([
-                            'bold', 'italic', 'underline',
-                            'bulletList', 'orderedList',
-                            'h2', 'h3',
-                            'link', 'undo', 'redo',
+                            'bold',
+                            'italic',
+                            'underline',
+                            'bulletList',
+                            'orderedList',
+                            'h2',
+                            'h3',
+                            'link',
+                            'undo',
+                            'redo',
                         ])
                         ->columnSpanFull(),
                 ]),
@@ -81,16 +87,16 @@ class ServiceForm
                         ->native(false),
 
                     FileUpload::make('image_url')
-                        ->label('Ảnh minh họa')
-                        ->image()
-                        ->directory('services')
-                        ->disk('public')
-                        ->imagePreviewHeight(150)
-                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                        ->maxSize(2048)
-                        ->helperText('JPG, PNG, WEBP – tối đa 2MB'),
+                    ->label('Ảnh minh họa')
+                    ->image()
+                    ->directory('services')
+                    ->disk('public')
+                    ->visibility('public')
+                    ->imagePreviewHeight(150)
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxSize(2048)
+                    ->helperText('JPG, PNG, WEBP – tối đa 2MB'),
                 ]),
-    
         ]);
     }
 }

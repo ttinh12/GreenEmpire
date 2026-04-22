@@ -25,6 +25,7 @@ class ServicesTable
                 // Ảnh minh họa
                 ImageColumn::make('image_url')
                     ->label('Ảnh')
+                    ->disk('public')
                     ->circular()
                     ->defaultImageUrl(
                         'https://ui-avatars.com/api/?name=S&background=e5e7eb&color=6b7280&size=40'

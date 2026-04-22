@@ -71,6 +71,7 @@ class ServiceInfolist
 
                     ImageEntry::make('image_url')
                         ->label('Ảnh minh họa')
+                        ->disk('public')
                         ->height(200)
                         ->extraImgAttributes([
                             'class' => 'rounded-xl shadow-md object-cover',
