@@ -21,7 +21,7 @@ use App\Filament\Resources\Users\RelationManagers\AssignedTasksRelationManager;
 
 class UserResource extends Resource
 {
-    protected static ?string $model = User::class;
+    protected static ?string $model = User::class; 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserCircle;
     protected static string|UnitEnum|null $navigationGroup = 'Cài đặt hệ thống';
 
