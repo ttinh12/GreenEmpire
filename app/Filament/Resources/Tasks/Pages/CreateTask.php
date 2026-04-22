@@ -13,7 +13,7 @@ class CreateTask extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
 
-        $data['creator_id'] = Auth::id();
+        //$data['creator_id'] = Auth::id();
         // Auto set started_at nếu tạo thẳng In Progress
         if (($data['status'] ?? null) == Task::STATUS_IN_PROGRESS && empty($data['started_at'])) {
             $data['started_at'] = now();
