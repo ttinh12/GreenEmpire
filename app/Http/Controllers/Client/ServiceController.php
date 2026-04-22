@@ -167,6 +167,21 @@ class ServiceController extends Controller
             ->with('success', 'Hợp đồng đã được ký! Hóa đơn đã được tạo — vui lòng thanh toán.');
     }
 
+    // ── Dịch vụ của tôi: tổng hợp hợp đồng + hóa đơn ────────────────
+    public function myServices()
+    {
+        $customer = Customer::where('email', Auth::user()->email)->first();
+
+        $contracts = $customer
+            ? Contract::where('customer_id', $customer->id)
+                ->with(['invoices.payments'])
+                ->latest()
+                ->paginate(10)
+            : collect();
+
+        return view('client.my-services', compact('contracts'));
+    }
+
     // ── Danh sách hóa đơn của tôi ─────────────────────────────────
     public function myInvoices()
     {

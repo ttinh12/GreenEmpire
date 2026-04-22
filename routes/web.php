@@ -4,12 +4,13 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ServiceController;
 use App\Http\Controllers\Client\TicketController;
 use App\Http\Controllers\ContractPdfController;
+use App\Http\Controllers\InvoicePdfController;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // ── Trang chủ → redirect login ─────────────────────────────────
-Route::get('/', fn() => redirect()->route('login'));
+Route::get('/', fn () => redirect()->route('login'));
 
 // ── Dashboard ──────────────────────────────────────────────────
 Route::get('/dashboard', function () {
@@ -28,6 +29,10 @@ Route::get('/services/{id}', [ServiceController::class, 'show'])
 
 // ── Luồng đăng ký dịch vụ → hợp đồng → hóa đơn → thanh toán ──
 Route::middleware('auth')->prefix('client')->name('client.')->group(function () {
+
+    // Dịch vụ của tôi (tổng hợp)
+    Route::get('/my-services', [ServiceController::class, 'myServices'])
+        ->name('my-services');
 
     // Đăng ký dịch vụ
     Route::get('/services/{id}/register', [ServiceController::class, 'register'])
@@ -70,5 +75,10 @@ Route::middleware('auth')->group(function () {
 Route::get('/admin/contracts/{id}/view-pdf', [ContractPdfController::class, 'download'])
     ->middleware('auth')
     ->name('contracts.pdf');
+
+// ── PDF Hóa đơn ────────────────────────────────────────────────
+Route::get('/invoices/{id}/pdf', [InvoicePdfController::class, 'download'])
+    ->middleware('auth')
+    ->name('invoices.pdf');
 
 require __DIR__ . '/auth.php';
