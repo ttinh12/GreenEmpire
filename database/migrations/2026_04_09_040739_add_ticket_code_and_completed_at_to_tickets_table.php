@@ -51,8 +51,16 @@ return new class extends Migration
                 ->update(['ticket_code' => sprintf('TK-%s-%03d', $year, $newNumber)]);
         }
 
-        $existingIndex = DB::select("SHOW INDEX FROM tickets WHERE Key_name = 'tickets_ticket_code_unique'");
-        if (empty($existingIndex)) {
+        $driver = Schema::getConnection()->getDriverName();
+
+        $existingIndex = match ($driver) {
+            'sqlite' => collect(DB::select("PRAGMA index_list('tickets')"))
+                ->contains(fn ($index) => ($index->name ?? null) === 'tickets_ticket_code_unique'),
+            'mysql' => ! empty(DB::select("SHOW INDEX FROM tickets WHERE Key_name = 'tickets_ticket_code_unique'")),
+            default => false,
+        };
+
+        if (! $existingIndex) {
             Schema::table('tickets', function (Blueprint $table) {
                 $table->unique('ticket_code');
             });

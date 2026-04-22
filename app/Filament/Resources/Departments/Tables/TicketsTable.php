@@ -1,14 +1,13 @@
 <?php
 
+namespace App\Filament\Resources\Departments\Tables;
+
 use App\Enums\TicketPriority;
-use App\Models\Ticket;
-use Dom\Text;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use SebastianBergmann\CodeCoverage\Filter;
 
 class TicketsTable
 {
@@ -16,7 +15,6 @@ class TicketsTable
     {
         return $table
             ->columns([
-
                 TextColumn::make('title')
                     ->searchable(),
 
@@ -50,18 +48,14 @@ class TicketsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
             ])
-
             ->filters([
-
+                //
             ])
-
-            ->recordActions([
+            ->actions([
                 EditAction::make(),
             ])
-
-            ->toolbarActions([
+            ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

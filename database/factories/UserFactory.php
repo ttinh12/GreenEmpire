@@ -30,7 +30,7 @@ class UserFactory extends Factory
 
             'email_verified_at' => now(),
 
-            'password' => bcrypt('123456'), // login demo
+            'password' => static::$password ??= Hash::make('password'),
 
             'avatar_url' => $this->faker->imageUrl(200, 200, 'people'),
 

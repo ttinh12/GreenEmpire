@@ -15,7 +15,7 @@ use App\Mail\InvoiceMail;
 
 use Illuminate\Support\Facades\Mail;
 
-
+use App\Http\Controllers\ContractPdfController;
 Route::get('/', function () {
 
     return redirect()->route('login');
@@ -105,7 +105,9 @@ Route::get('/test-invoice-mail', function () {
     return "Invoice Mail Sent";
 });
 
-
+// Route này để xử lý xuất PDF
+Route::get('/admin/contracts/{id}/view-pdf', [ContractPdfController::class, 'download'])
+    ->middleware(['auth'])
+    ->name('contracts.pdf');
 
 require __DIR__ . '/auth.php';
-
