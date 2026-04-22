@@ -188,7 +188,7 @@
     </p>
 
     <div class="party-block">
-        <div class="party-title">BÊN A: GREEN EMPIRE</div>
+        <div class="party-title">BÊN A: FPT Polytechnic</div>
         <table class="info-table">
             <tr>
                 <td class="info-label">Đại diện:</td>

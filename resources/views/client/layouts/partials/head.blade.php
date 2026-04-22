@@ -24,7 +24,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>GreenEmpire | Dashboard</title>
+    <title>{{ config('app.name') }} | Dashboard</title>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('logo/logo.jpg') }}" />
 

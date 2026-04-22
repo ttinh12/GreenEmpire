@@ -1,3 +1,12 @@
+<style>
+    .app-brand-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* căn giữa ngang */
+        width: 100%;
+    }
+</style>
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="{{ route('dashboard') }}" class="app-brand-link">
@@ -20,7 +29,7 @@
             <span class="app-brand-text fw-bold ms-2 text-uppercase" style="letter-spacing: 1px; font-size: 1.25rem;">
                 FPT <span class="text-primary">Polytechnic</span>
             </span> </a>
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
     </div>
