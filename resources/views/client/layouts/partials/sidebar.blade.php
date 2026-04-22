@@ -7,7 +7,9 @@
                         <g transform="translate(-27.000000, -15.000000)">
                             <g transform="translate(27.000000, 15.000000)">
                                 <g transform="translate(0.000000, 8.000000)">
-                                    <mask id="mask-2" fill="white"><use xlink:href="#path-1"></use></mask>
+                                    <mask id="mask-2" fill="white">
+                                        <use xlink:href="#path-1"></use>
+                                    </mask>
                                     <use fill="#696cff" xlink:href="#path-1"></use>
                                 </g>
                             </g>
@@ -15,8 +17,9 @@
                     </g>
                 </svg>
             </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">GreenEmpire</span>
-        </a>
+            <span class="app-brand-text fw-bold ms-2 text-uppercase" style="letter-spacing: 1px; font-size: 1.25rem;">
+                FPT <span class="text-primary">Polytechnic</span>
+            </span> </a>
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
         </a>
@@ -101,7 +104,8 @@
             <span class="menu-header-text">Hỗ trợ</span>
         </li>
 
-        <li class="menu-item {{ request()->routeIs('dashboard') || request()->routeIs('tickets.*') ? 'active open' : '' }}">
+        <li
+            class="menu-item {{ request()->routeIs('dashboard') || request()->routeIs('tickets.*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-support"></i>
                 <div>Ticket hỗ trợ</div>
@@ -122,15 +126,15 @@
 
         {{-- ── Admin (chỉ hiện với admin) ── --}}
         @if(Auth::user()->hasAnyRole(['admin', 'super_admin', 'manager']))
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Quản trị</span>
-        </li>
-        <li class="menu-item">
-            <a href="/admin" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-cog"></i>
-                <div>Trang quản trị</div>
-            </a>
-        </li>
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Quản trị</span>
+            </li>
+            <li class="menu-item">
+                <a href="/admin" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-cog"></i>
+                    <div>Trang quản trị</div>
+                </a>
+            </li>
         @endif
 
     </ul>

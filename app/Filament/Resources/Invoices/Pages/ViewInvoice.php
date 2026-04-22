@@ -15,6 +15,12 @@ class ViewInvoice extends ViewRecord
         return [
             EditAction::make()
                 ->label('Chỉnh sửa hóa đơn'),
+                \Filament\Actions\Action::make("downloadPdf")
+                ->label("Tải PDF")
+                ->icon("heroicon-o-document-arrow-down")
+                ->color("success")
+                ->url(fn ($record) => route("invoices.pdf", ["id" => $record->id]))
+                ->openUrlInNewTab(),
         ];
     }
 }
