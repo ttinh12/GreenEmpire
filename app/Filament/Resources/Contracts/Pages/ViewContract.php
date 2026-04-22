@@ -33,7 +33,7 @@ class ViewContract extends ViewRecord
                 ->label("Tải PDF")
                 ->icon("heroicon-o-document-arrow-down")
                 ->color("success")
-                ->url(fn ($record) => route("contracts.pdf", ["id" => $record->id]))
+                ->url(fn($record) => route("contracts.pdf", ["id" => $record->id]))
                 ->openUrlInNewTab(),
         ];
     }
@@ -127,7 +127,7 @@ class ViewContract extends ViewRecord
                                         TextEntry::make("status_label")
                                             ->label("Trạng thái")
                                             ->badge()
-                                            ->color(fn (string $state): string => match ($state) {
+                                            ->color(fn(string $state): string => match ($state) {
                                                 "Đang hoạt động" => "success",
                                                 "Đã hoàn thành" => "info",
                                                 "Quá hạn" => "danger",
@@ -152,7 +152,7 @@ class ViewContract extends ViewRecord
                                 TextEntry::make("file_url")
                                     ->label("Tệp đính kèm")
                                     ->placeholder("Không có tệp đính kèm")
-                                    ->url(fn ($state) => $state ?: null),
+                                    ->url(fn($state) => $state ?: null),
                             ]),
 
                         Tab::make("Nhật ký")
@@ -174,8 +174,37 @@ class ViewContract extends ViewRecord
                                             ->dateTime("d/m/Y H:i:s"),
                                     ]),
                             ]),
+                        Tab::make('Tasks')
+                            ->icon('heroicon-o-clipboard-document-list')
+                            ->schema([
+                                \Filament\Infolists\Components\RepeatableEntry::make('tasks')
+                                    ->label('')
+                                    ->schema([
+                                        TextEntry::make('title')
+                                            ->label('Tiêu đề')
+                                            ->weight('bold'),
+                                        TextEntry::make('status')
+                                            ->label('Trạng thái')
+                                            ->badge()
+                                            ->formatStateUsing(fn($state) => \App\Models\Task::statusLabels()[$state] ?? $state)
+                                            ->color(fn($state) => match ((int)$state) {
+                                                1 => 'gray',
+                                                2 => 'warning',
+                                                3 => 'info',
+                                                4 => 'success',
+                                                default => 'gray',
+                                            }),
+                                        TextEntry::make('assignee.name')
+                                            ->label('Người thực hiện')
+                                            ->default('Chưa assign'),
+                                        TextEntry::make('due_date')
+                                            ->label('Hạn xong')
+                                            ->date('d/m/Y')
+                                            ->default('—'),
+                                    ])
+                                    ->columns(4),
+                            ]),
                     ]),
             ])->columns(1);
     }
 }
-

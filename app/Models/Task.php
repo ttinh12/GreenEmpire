@@ -33,6 +33,7 @@ class Task extends Model
         'sort'         => 'decimal:10',
         'status'       => 'integer',
         'priority'     => 'integer',
+        
     ];
 
     // ──────────────── CONSTANTS ────────────────
@@ -65,6 +66,14 @@ class Task extends Model
             self::PRIORITY_URGENT => 'Khẩn cấp',
         ];
     }
+    protected static function booted()
+    {
+        static::creating(function ($task) {
+            if (auth()->check()) {
+                $task->creator_id = auth()->id();
+            }
+        });
+    }
 
     // ──────────────── RELATIONSHIPS ────────────────
     public function assignee(): BelongsTo
@@ -87,7 +96,7 @@ class Task extends Model
         return $this->belongsTo(Contract::class);
     }
 
-   
+
 
     // ──────────────── HELPERS ────────────────
     public function getStatusLabelAttribute(): string

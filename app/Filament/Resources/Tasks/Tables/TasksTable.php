@@ -61,11 +61,34 @@ class TasksTable
                     ->searchable()
                     ->default('—'),
 
+                // ✅ DUE DATE (FIX CHUẨN)
                 TextColumn::make('due_date')
                     ->label('Hạn xong')
-                    ->date('d/m/Y')
+                    ->badge()
                     ->sortable()
-                    ->default('—'),
+                    ->color(fn($record) =>
+                        $record->status == Task::STATUS_DONE
+                            ? 'success'
+                            : (
+                                $record->due_date &&
+                                $record->due_date->isPast() &&
+                                !$record->due_date->isToday()
+                                    ? 'danger'
+                                    : 'gray'
+                            )
+                    )
+                    ->formatStateUsing(fn($state, $record) =>
+                        $state
+                            ? $state->format('d/m/Y') . (
+                                $record->status != Task::STATUS_DONE &&
+                                $record->due_date &&
+                                $record->due_date->isPast() &&
+                                !$record->due_date->isToday()
+                                    ? ' (Quá hạn)'
+                                    : ''
+                            )
+                            : '—'
+                    ),
 
                 TextColumn::make('started_at')
                     ->label('Bắt đầu')
@@ -156,7 +179,16 @@ class TasksTable
                 ]),
             ])
             ->defaultSort('sort')
-            ->striped();
+            ->striped()
 
+            // ✅ HIGHLIGHT DÒNG QUÁ HẠN
+            ->recordClasses(fn($record) =>
+                $record->due_date &&
+                $record->due_date->isPast() &&
+                !$record->due_date->isToday() &&
+                $record->status != Task::STATUS_DONE
+                    ? 'bg-red-50 border-l-4 border-red-500'
+                    : null
+            );
     }
 }
