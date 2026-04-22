@@ -1,113 +1,74 @@
 <?php
 
-use App\Http\Controllers\client\HomeController;
-use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\ServiceController;
+use App\Http\Controllers\Client\TicketController;
+use App\Http\Controllers\ContractPdfController;
+use App\Models\Ticket;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Client\TicketController;
+// ── Trang chủ → redirect login ─────────────────────────────────
+Route::get('/', fn() => redirect()->route('login'));
 
-use Illuminate\Support\Facades\Auth;
-
-use App\Models\User;
-use App\Models\Invoice;
-use App\Mail\InvoiceMail;
-
-use Illuminate\Support\Facades\Mail;
-
-use App\Http\Controllers\ContractPdfController;
-Route::get('/', function () {
-
-    return redirect()->route('login');
-
-});
-
-use App\Models\Ticket;
-
-
-
+// ── Dashboard ──────────────────────────────────────────────────
 Route::get('/dashboard', function () {
-
     $tickets = Ticket::where('user_id', Auth::id())->paginate(10);
-
     return view('dashboard', compact('tickets'));
-
 })->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/services', [HomeController::class, 'service'])
-    ->middleware(['auth'])
+
+// ── Dịch vụ (public xem, auth để đăng ký) ─────────────────────
+Route::get('/services', [ServiceController::class, 'index'])
+    ->middleware('auth')
     ->name('services.index');
 
-Route::get('/tickets', [TicketController::class, 'index'])
+Route::get('/services/{id}', [ServiceController::class, 'show'])
+    ->middleware('auth')
+    ->name('services.show');
 
-    ->middleware(['auth'])
+// ── Luồng đăng ký dịch vụ → hợp đồng → hóa đơn → thanh toán ──
+Route::middleware('auth')->prefix('client')->name('client.')->group(function () {
 
-    ->name('tickets.index');
+    // Đăng ký dịch vụ
+    Route::get('/services/{id}/register', [ServiceController::class, 'register'])
+        ->name('services.register');
+    Route::post('/services/{id}/register', [ServiceController::class, 'store'])
+        ->name('services.store');
 
-Route::get('/tickets/create', [TicketController::class, 'create'])
+    // Hợp đồng
+    Route::get('/contracts', [ServiceController::class, 'myContracts'])
+        ->name('contracts.index');
+    Route::get('/contracts/{id}', [ServiceController::class, 'showContract'])
+        ->name('contracts.show');
+    Route::post('/contracts/{id}/sign', [ServiceController::class, 'signContract'])
+        ->name('contracts.sign');
 
-    ->middleware(['auth'])
+    // Hóa đơn
+    Route::get('/invoices', [ServiceController::class, 'myInvoices'])
+        ->name('invoices.index');
+    Route::get('/invoices/{id}', [ServiceController::class, 'showInvoice'])
+        ->name('invoices.show');
+    Route::post('/invoices/{id}/pay', [ServiceController::class, 'payInvoice'])
+        ->name('invoices.pay');
+});
 
-    ->name('ticket.create');
+// ── Ticket ─────────────────────────────────────────────────────
+Route::get('/tickets', [TicketController::class, 'index'])->middleware('auth')->name('tickets.index');
+Route::get('/tickets/create', [TicketController::class, 'create'])->middleware('auth')->name('ticket.create');
+Route::post('/tickets/store', [TicketController::class, 'store'])->middleware('auth')->name('ticket.store');
+Route::get('/tickets/{id}', [TicketController::class, 'show'])->middleware('auth')->name('tickets.show');
 
-Route::get('/tickets/{id}', [TicketController::class, 'show'])
-
-    ->middleware(['auth'])
-
-    ->name('tickets.show');
-Route::get('/services/{id}', [HomeController::class, 'serviceDetail'])->name('services.show');
-
-
-Route::post('/tickets/store', [TicketController::class, 'store'])
-
-    ->middleware(['auth'])
-
-    ->name('ticket.store');
-
-
-
+// ── Profile ────────────────────────────────────────────────────
 Route::middleware('auth')->group(function () {
-
     Route::get('/profile/edit', [HomeController::class, 'edit'])->name('profile.edit');
-
     Route::patch('/profile', [HomeController::class, 'update'])->name('profile.update');
     Route::get('/profile', [HomeController::class, 'show'])->name('profile.show');
-
-    // Route::delete('/profile', [HomeController::class, 'destroy'])->name('profile.destroy');
-
     Route::put('/profile/password', [HomeController::class, 'updatePassword'])->name('profile.password.update');
-
-});
-// Chỉ Admin mới vào được nhóm này
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/custom-stats', function () {
-        return "Trang thống kê nội bộ của Admin";
-    });
-    // Thêm các route admin khác ở đây...
 });
 
-
-
-Route::get('/test-mail', function () {
-    Mail::raw('Test mail từ CRM', function ($message) {
-        $message->to('test@test.com')
-                ->subject('Test Mail');
-    });
-
-    return 'Mail sádasdaent';
-});
-
-Route::get('/test-invoice-mail', function () {
-
-    $invoice = Invoice::latest()->first();
-
-    Mail::to('test@test.com')->send(new InvoiceMail($invoice));
-
-    return "Invoice Mail Sent";
-});
-
-// Route này để xử lý xuất PDF
+// ── PDF Hợp đồng ───────────────────────────────────────────────
 Route::get('/admin/contracts/{id}/view-pdf', [ContractPdfController::class, 'download'])
-    ->middleware(['auth'])
+    ->middleware('auth')
     ->name('contracts.pdf');
 
 require __DIR__ . '/auth.php';
