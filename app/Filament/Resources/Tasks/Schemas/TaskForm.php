@@ -62,19 +62,21 @@ class TaskForm
 
                             if (!$contract) return;
 
-                            // AUTO CUSTOMER
+                            // ✅ AUTO CUSTOMER
                             $set('customer_id', $contract->customer_id);
 
-                            // AI ASSIGN
+                            // 🤖 AI ASSIGN
                             $user = SimpleAISuggester::suggest($contract->customer_id);
 
                             if ($user) {
                                 $set('assignee_id', $user->id);
 
+                                // 🤖 AI DEADLINE
                                 $deadline = SimpleAISuggester::suggestDeadline($user->id);
 
+                                // ⚠️ đảm bảo không set ngày quá khứ
                                 if ($deadline && $deadline->isFuture()) {
-                                    $set('due_date', $deadline);
+                                    $set('due_date', $deadline->format('Y-m-d'));
                                 }
                             }
                         }),
@@ -87,7 +89,7 @@ class TaskForm
                 ]),
 
             // ================= TRẠNG THÁI =================
-            Section::make('Trạng thái & Thời gian')
+            Section::make('Trạng thái & Ưu tiên')
                 ->columns(2)
                 ->schema([
 
@@ -119,11 +121,9 @@ class TaskForm
                         ->seconds(false)
                         ->native(false)
                         ->displayFormat('d/m/Y H:i')
-                        ->required() // 🔥 bắt buộc chọn
-                        ->default(now()), // 🤖 gợi ý sẵn
+                        ->required()
+                        ->default(now()),
 
-
-                    // DEADLINE
                     DateTimePicker::make('due_date')
                         ->label('Hạn hoàn thành')
                         ->helperText('🤖 AI sẽ tự gợi ý khi chọn hợp đồng')
