@@ -26,15 +26,14 @@ class Task extends Model
         'completed_at',
     ];
 
-    protected $casts = [
-        'due_date'     => 'date',
-        'started_at'   => 'datetime',
-        'completed_at' => 'datetime',
-        'sort'         => 'decimal:10',
-        'status'       => 'integer',
-        'priority'     => 'integer',
-        
-    ];
+   protected $casts = [
+    'due_date'     => 'datetime', // ✅ ĐÚNG
+    'started_at'   => 'datetime',
+    'completed_at' => 'datetime',
+    'sort'         => 'decimal:10',
+    'status'       => 'integer',
+    'priority'     => 'integer',
+];
 
     // ──────────────── CONSTANTS ────────────────
     const STATUS_TODO        = 1;

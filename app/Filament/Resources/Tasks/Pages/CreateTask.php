@@ -12,19 +12,17 @@ class CreateTask extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-
-        //$data['creator_id'] = Auth::id();
-        // Auto set started_at nếu tạo thẳng In Progress
-        if (($data['status'] ?? null) == Task::STATUS_IN_PROGRESS && empty($data['started_at'])) {
-            $data['started_at'] = now();
+        // 🟢 LUÔN có start
+        if (empty($data['started_at'])) {
+            $data['started_at'] = now(); // fallback thôi
         }
 
-        // Auto set completed_at nếu tạo thẳng Done
-        if (($data['status'] ?? null) == Task::STATUS_DONE && empty($data['completed_at'])) {
-            $data['completed_at'] = now();
+        // 🔴 Nếu tạo DONE → phải có completed_at
+        if (($data['status'] ?? null) == Task::STATUS_DONE) {
+            $data['completed_at'] = $data['completed_at'] ?? now();
         }
 
-        // Auto tính sort (đẩy xuống cuối)
+        // 📊 sort cuối list
         $data['sort'] = (Task::max('sort') ?? 0) + 1;
 
         return $data;

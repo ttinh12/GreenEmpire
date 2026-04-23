@@ -8,32 +8,39 @@ use Carbon\Carbon;
 
 class SimpleAISuggester
 {
+    // 🤖 GỢI Ý NGƯỜI PHÙ HỢP
     public static function suggest($customerId)
     {
         $users = User::where('role', 'staff')
             ->where('is_active', 1)
             ->get();
 
+        if ($users->isEmpty()) {
+            return null;
+        }
+
+        // 📊 preload workload
+        $taskCounts = Task::selectRaw('assignee_id, COUNT(*) as total')
+            ->where('status', '!=', Task::STATUS_DONE)
+            ->groupBy('assignee_id')
+            ->pluck('total', 'assignee_id');
+
+        // 📊 lịch sử theo customer
+        $historyCounts = Task::selectRaw('assignee_id, COUNT(*) as total')
+            ->where('customer_id', $customerId)
+            ->groupBy('assignee_id')
+            ->pluck('total', 'assignee_id');
+
         $bestUser = null;
-        $bestScore = -999;
+        $bestScore = -INF;
 
         foreach ($users as $user) {
 
-            $score = 0;
+            $taskCount = $taskCounts[$user->id] ?? 0;
+            $history   = $historyCounts[$user->id] ?? 0;
 
-            // 🔹 workload (ít task hơn → tốt hơn)
-            $taskCount = Task::where('assignee_id', $user->id)
-                ->where('status', '!=', Task::STATUS_DONE)
-                ->count();
-
-            $score -= $taskCount * 2;
-
-            // 🔹 đã làm customer này
-            $history = Task::where('assignee_id', $user->id)
-                ->where('customer_id', $customerId)
-                ->count();
-
-            $score += $history * 3;
+            // 🎯 scoring: ưu tiên kinh nghiệm + ít việc
+            $score = ($history * 3) - ($taskCount * 2);
 
             if ($score > $bestScore) {
                 $bestScore = $score;
@@ -44,21 +51,39 @@ class SimpleAISuggester
         return $bestUser;
     }
 
-    // 🤖 GỢI Ý DEADLINE
+    // 🤖 GỢI Ý DEADLINE THÔNG MINH
     public static function suggestDeadline($userId)
     {
+        if (!$userId) {
+            return null;
+        }
+
         $taskCount = Task::where('assignee_id', $userId)
             ->where('status', '!=', Task::STATUS_DONE)
             ->count();
 
-        if ($taskCount <= 2) {
-            $days = 1;
-        } elseif ($taskCount <= 5) {
-            $days = 3;
-        } else {
-            $days = 5;
+        // 🎯 workload → số ngày
+        $days = match (true) {
+            $taskCount <= 2 => 1,
+            $taskCount <= 5 => 3,
+            default => 5,
+        };
+
+        $date = now()
+            ->addDays($days)
+            ->setTime(17, 30, 0);
+
+        // 🚫 tránh cuối tuần
+        while ($date->isWeekend()) {
+            $date->addDay();
         }
 
-        return Carbon::now()->addDays($days);
+        // 🚫 tránh quá khứ (phòng lỗi timezone)
+        if ($date->isPast()) {
+            $date = now()->addDay()->setTime(17, 30, 0);
+        }
+
+        return $date->startOfMinute(); // chuẩn format
     }
 }
+

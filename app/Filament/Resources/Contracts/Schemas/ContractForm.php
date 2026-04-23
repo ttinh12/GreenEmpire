@@ -124,6 +124,18 @@ class ContractForm
                         ->label("Người cập nhật")
                         ->numeric(),
                 ]),
+            // ── SECTION 6: Phân công Task ────────────────────────────────
+            Section::make('Phân công công việc')
+                ->description('Chọn người thực hiện cho các task tự động')
+                ->icon('heroicon-o-user-group')
+                ->schema([
+                    Select::make('task_assignee_id')
+                        ->label('Người thực hiện tasks')
+                        ->options(\App\Models\User::where('is_active', 1)->pluck('name', 'id'))
+                        ->searchable()
+                        ->nullable()
+                        ->helperText('Người này sẽ được assign vào 5 tasks tự động khi tạo hợp đồng'),
+                ]),
         ]);
     }
 }

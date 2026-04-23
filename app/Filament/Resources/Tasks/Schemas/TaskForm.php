@@ -9,7 +9,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use App\Services\SimpleAISuggester;
 
 class TaskForm
@@ -49,7 +49,7 @@ class TaskForm
                         ->label('Hợp đồng')
                         ->relationship('contract', 'title')
                         ->searchable()
-                        ->live() // 🔥 dùng live thay vì reactive (Filament mới)
+                        ->live()
                         ->afterStateUpdated(function ($state, callable $set) {
 
                             if (!$state) {
@@ -62,21 +62,19 @@ class TaskForm
 
                             if (!$contract) return;
 
-                            // ✅ AUTO CUSTOMER
+                            // AUTO CUSTOMER
                             $set('customer_id', $contract->customer_id);
 
-                            // 🤖 AI ASSIGN
+                            // AI ASSIGN
                             $user = SimpleAISuggester::suggest($contract->customer_id);
 
                             if ($user) {
                                 $set('assignee_id', $user->id);
 
-                                // 🤖 AI DEADLINE
                                 $deadline = SimpleAISuggester::suggestDeadline($user->id);
 
-                                // ⚠️ đảm bảo không set ngày quá khứ
                                 if ($deadline && $deadline->isFuture()) {
-                                    $set('due_date', $deadline->format('Y-m-d'));
+                                    $set('due_date', $deadline);
                                 }
                             }
                         }),
@@ -85,11 +83,11 @@ class TaskForm
                         ->label('Khách hàng')
                         ->relationship('customer', 'name')
                         ->disabled()
-                        ->dehydrated(), // vẫn lưu DB
+                        ->dehydrated(),
                 ]),
 
             // ================= TRẠNG THÁI =================
-            Section::make('Trạng thái & Ưu tiên')
+            Section::make('Trạng thái & Thời gian')
                 ->columns(2)
                 ->schema([
 
@@ -97,7 +95,18 @@ class TaskForm
                         ->label('Trạng thái')
                         ->options(Task::statusLabels())
                         ->default(Task::STATUS_TODO)
-                        ->required(),
+                        ->required()
+                        ->live()
+                        ->afterStateUpdated(function ($state, callable $set, callable $get) {
+
+                            if ($state == Task::STATUS_IN_PROGRESS && !$get('started_at')) {
+                                $set('started_at', now());
+                            }
+
+                            if ($state == Task::STATUS_DONE && !$get('completed_at')) {
+                                $set('completed_at', now());
+                            }
+                        }),
 
                     Select::make('priority')
                         ->label('Độ ưu tiên')
@@ -105,11 +114,25 @@ class TaskForm
                         ->default(Task::PRIORITY_MEDIUM)
                         ->required(),
 
-                    DatePicker::make('due_date')
+                    DateTimePicker::make('started_at')
+                        ->label('Ngày bắt đầu')
+                        ->seconds(false)
+                        ->native(false)
+                        ->displayFormat('d/m/Y H:i')
+                        ->required() // 🔥 bắt buộc chọn
+                        ->default(now()), // 🤖 gợi ý sẵn
+
+
+                    // DEADLINE
+                    DateTimePicker::make('due_date')
                         ->label('Hạn hoàn thành')
-                        ->helperText('🤖 AI sẽ tự đề xuất')
-                        ->minDate(now())
-                        ->nullable(),
+                        ->helperText('🤖 AI sẽ tự gợi ý khi chọn hợp đồng')
+                        ->seconds(false)
+                        ->minDate(now()->subDay())
+                        ->native(false)
+                        ->displayFormat('d/m/Y H:i')
+                        ->nullable()
+                        ->dehydrateStateUsing(fn($state) => $state ?: null),
                 ]),
         ]);
     }
