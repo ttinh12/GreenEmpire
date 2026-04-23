@@ -10,15 +10,15 @@ use Illuminate\Support\Facades\DB;
 enum UserStatus: string implements HasLabel
 {
     case ACTIVE = '1';
-    case INACTIVE = '3';
-    case BANNED = '2';
+    case INACTIVE = '2';
+    case BANNED = '3';
 
     public function getLabel(): string
     {
         return match ($this) {
-            self::ACTIVE => 'Thấp',
-            self::INACTIVE => 'Trung bình',
-            self::BANNED => 'Cao',
+            self::ACTIVE => 'Hoạt động',
+            self::INACTIVE => 'Không hoạt động',
+            self::BANNED => 'Bị khóa',
         };
     }
 }

@@ -96,7 +96,7 @@ class TransactionInfolist
                     TextEntry::make('approved_at')
                         ->label('Ngày phê duyệt')
                         ->dateTime('d/m/Y H:i')
-                        ->default('—'),
+                        ->placeholder('Chưa phê duyệt'),
 
                     TextEntry::make('created_at')
                         ->label('Ngày tạo')

@@ -42,7 +42,7 @@ class TaskForm
                         ->label('Người thực hiện')
                         ->relationship('assignee', 'name')
                         ->searchable()
-                        ->helperText('🤖 AI sẽ tự gợi ý khi chọn hợp đồng')
+                        // ->helperText('🤖 AI sẽ tự gợi ý khi chọn hợp đồng')
                         ->nullable(),
 
                     Select::make('contract_id')

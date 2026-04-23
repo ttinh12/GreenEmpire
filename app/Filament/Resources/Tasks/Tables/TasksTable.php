@@ -61,7 +61,6 @@ class TasksTable
                     ->searchable()
                     ->default('—'),
 
-                // ✅ DUE DATE (FIX CHUẨN)
                 TextColumn::make('due_date')
                     ->label('Hạn xong')
                     ->badge()
@@ -93,13 +92,13 @@ class TasksTable
                 TextColumn::make('started_at')
                     ->label('Bắt đầu')
                     ->dateTime('d/m/Y H:i')
-                    ->default('—')
+                    ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('completed_at')
                     ->label('Hoàn thành')
                     ->dateTime('d/m/Y H:i')
-                    ->default('—')
+                    ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
@@ -181,7 +180,6 @@ class TasksTable
             ->defaultSort('sort')
             ->striped()
 
-            // ✅ HIGHLIGHT DÒNG QUÁ HẠN
             ->recordClasses(fn($record) =>
                 $record->due_date &&
                 $record->due_date->isPast() &&

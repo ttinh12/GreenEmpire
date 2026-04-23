@@ -200,7 +200,7 @@ class ViewContract extends ViewRecord
                                         TextEntry::make('due_date')
                                             ->label('Hạn xong')
                                             ->date('d/m/Y')
-                                            ->default('—'),
+                                            ->placeholder('—'),
                                     ])
                                     ->columns(4),
                             ]),

@@ -68,7 +68,6 @@ class TasksRelationManager extends RelationManager
     {
         return $table
 
-            // ✅ FIX: thêm nút tạo task
             ->headerActions([
                 CreateAction::make()
                     ->label('Thêm Task')
@@ -140,13 +139,13 @@ class TasksRelationManager extends RelationManager
                 TextColumn::make('started_at')
                     ->label('Bắt đầu')
                     ->dateTime('d/m/Y H:i')
-                    ->default('—')
+                    ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('completed_at')
                     ->label('Hoàn thành')
                     ->dateTime('d/m/Y H:i')
-                    ->default('—')
+                    ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->recordActions([
@@ -182,7 +181,6 @@ class TasksRelationManager extends RelationManager
                 ]),
             ])
 
-            // ✅ FIX nhẹ (an toàn hơn)
             ->defaultSort('sort', 'asc');
     }
 }
